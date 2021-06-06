@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from rest_framework import serializers
 from . import models
 
@@ -52,15 +53,65 @@ class BeerCellarEntrySerializer(serializers.ModelSerializer):
             return models.BeerCellar.objects.filter(owner=self.context['request'].user)
 
     beerCellar = UserBeerCellarField()  # only show cellars which belongs to the current user
+    beerName = serializers.ReadOnlyField(source="beer.beer_name")
 
     class Meta:
         model = models.BeerCellarEntry
-        fields = ['id', 'amount', 'datetime', 'beerCellar', 'beer']
+        fields = ['id', 'amount', 'datetime', 'beerCellar', 'beer', 'beerName']
+
+
+class AbsoluteBeerCellarEntrySerializer(BeerCellarEntrySerializer):
+    """
+    Special serializer to update the amount with an absolute value and not the difference
+    """
+
+    class Meta:
+        model = models.BeerCellarEntry
+        fields = ['amount', 'beerCellar', 'beer']
+
+    def create(self, validated_data):
+        absolute_amount = int(validated_data['amount'])
+        cellar = validated_data['beerCellar']
+        beer = validated_data['beer']
+
+        total_amount = models.BeerCellarEntry.objects.filter(beerCellar=cellar, beer=beer).aggregate(a=Sum('amount'))
+        validated_data['amount'] = f"{absolute_amount - int(total_amount['a'])}"
+
+        return super().create(validated_data)
 
 
 class BeerOrderSerializer(serializers.ModelSerializer):
+    class SellerBeerCellarEntryField(serializers.PrimaryKeyRelatedField):
+        def get_queryset(self):
+            return models.BeerCellarEntry.objects.exclude(beerCellar__owner=self.context['request'].user)
+
+    status = serializers.ReadOnlyField()
     buyer = serializers.ReadOnlyField(source='user.username')
+    beerCellarEntry = SellerBeerCellarEntryField()  # only entries from other users
+    beerName = serializers.ReadOnlyField(source="beerCellarEntry.beer.beer_name")
 
     class Meta:
         model = models.BeerOrder
-        fields = ['id', 'amount', 'status', 'beerCellarEntry', 'buyer']
+        fields = ['id', 'amount', 'status', 'datetime', 'beerCellarEntry', 'buyer', 'beerName']
+
+
+# special
+# BeerCellar details with all aggregated (amount) BeerCellarEntries
+class BeerCellarDetailSerializer(BeerCellarSerializer):
+    entries = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_entries(cellar):
+        entries = models.BeerCellarEntry.objects.filter(beerCellar=cellar) \
+            .values("beer") \
+            .annotate(amount=Sum('amount'))
+
+        for entry in entries:
+            beer = models.Beer.objects.get(id=entry['beer'])
+            entry['beerName'] = beer.beer_name
+
+        return entries
+
+    class Meta:
+        model = models.BeerCellar
+        fields = ['id', 'name', 'latitude', 'longitude', 'address', 'owner', 'entries']

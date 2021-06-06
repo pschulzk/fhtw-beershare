@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Address(models.Model):
     address = models.CharField(
         "Address",
-        max_length=50,
+        max_length=255,
     )
 
     zip_code = models.CharField(
@@ -43,19 +43,20 @@ class Beer(models.Model):
         on_delete=models.CASCADE, null=True
     )
 
+    @property
+    def beer_name(self):
+        return f"{self.brand} {self.type} ({self.liter}l)"
+
+    def __str__(self):
+        return self.beer_name
+
 
 class BeerCellar(models.Model):
     name = models.CharField(
         max_length=30
     )
-    latitude = models.DecimalField(     # format:  ##.######
-        max_digits=8,
-        decimal_places=6
-    )
-    longitude = models.DecimalField(    # format: ###.######
-        max_digits=9,
-        decimal_places=6
-    )
+    latitude = models.FloatField()
+    longitude = models.FloatField()
     address = models.ForeignKey(
         Address,
         on_delete=models.PROTECT
@@ -65,18 +66,28 @@ class BeerCellar(models.Model):
         on_delete=models.CASCADE
     )
 
+    def __str__(self):
+        return self.name
+
 
 class BeerCellarEntry(models.Model):
     amount = models.IntegerField()
-    datetime = models.DateTimeField()
+    datetime = models.DateTimeField(
+        auto_now_add=True,
+        blank=True
+    )
     beerCellar = models.ForeignKey(
         BeerCellar,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='entries'
     )
     beer = models.ForeignKey(
         Beer,
         on_delete=models.PROTECT
     )
+
+    def __str__(self):
+        return f"{self.beerCellar.name} ({self.beer})"
 
 
 class BeerOrder(models.Model):
@@ -89,7 +100,12 @@ class BeerOrder(models.Model):
 
     amount = models.PositiveIntegerField()
     status = models.PositiveSmallIntegerField(
-        choices=Status.choices
+        choices=Status.choices,
+        default=Status.PLACED
+    )
+    datetime = models.DateTimeField(
+        auto_now_add=True,
+        blank=True
     )
     beerCellarEntry = models.ForeignKey(
         BeerCellarEntry,
