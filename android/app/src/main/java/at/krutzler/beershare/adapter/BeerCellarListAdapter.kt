@@ -16,6 +16,8 @@ internal class BeerCellarListAdapter(private var mItems: List<BeerCellar>,
     internal inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private var llItem: LinearLayout = view.findViewById(R.id.llBeerCellarListItem)
         private var tvName: TextView = view.findViewById(R.id.tvName)
+        private var tvBeerCellarAddress: TextView = view.findViewById(R.id.tvBeerCellarAddress)
+
         private var tvLatitude: TextView = view.findViewById(R.id.tvLatitude)
         private var tvLongitude: TextView = view.findViewById(R.id.tvLongitude)
 
@@ -28,6 +30,7 @@ internal class BeerCellarListAdapter(private var mItems: List<BeerCellar>,
 
         fun bind(item: BeerCellar) {
             tvName.text = item.name
+            tvBeerCellarAddress.text = item.address
             tvLatitude.text = item.latitude.toString()
             tvLongitude.text = item.longitude.toString()
         }

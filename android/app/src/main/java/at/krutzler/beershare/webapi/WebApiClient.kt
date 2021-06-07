@@ -13,36 +13,49 @@ import java.util.*
 
 class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
 
-    object Constants {
-        const val WEBAPI_TAG = "WebApi"
+    companion object {
+        private const val TAG = "WebApi"
     }
 
-    //private val baseUrl = "http://10.0.2.2:8000/api/v1"
-    private val mBaseUrl = "http://192.168.1.7:8000/api/v1"
+    //private val mBaseUrl = "http://10.0.2.2:8000/api/v1"          // emulator
+    //private val mBaseUrl = "http://10.0.0.17:8000/api/v1"         // bgld
+    private val mBaseUrl = "http://192.168.1.7:8000/api/v1"       // vienna
+    //private val mBaseUrl = "http://192.168.43.166:8000/api/v1"    // OnePlus hotspot
 
     fun get(path: String, callback: ((String, Boolean) -> Unit)? = null) {
         val url = URL("$mBaseUrl/$path")
-        startRunnable(WebApiGetRunnable(url, callback))
+        startRunnable(WebApiGetRunnable(url, "GET", callback))
     }
 
     fun post(path: String, data: String, callback: ((String, Boolean) -> Unit)? = null) {
         val url = URL("$mBaseUrl/$path")
-        startRunnable(WebApiPostRunnable(url, data, callback))
+        startRunnable(WebApiPostRunnable(url, "POST", data, callback))
+    }
+
+    fun put(path: String, data: String, callback: ((String, Boolean) -> Unit)? = null) {
+        val url = URL("$mBaseUrl/$path")
+        startRunnable(WebApiPostRunnable(url, "PUT", data, callback))
+    }
+
+    fun delete(path: String, callback: ((String, Boolean) -> Unit)? = null) {
+        val url = URL("$mBaseUrl/$path")
+        startRunnable(WebApiGetRunnable(url, "DELETE", callback))
     }
 
     private fun startRunnable(runnable: Runnable) {
         Thread(runnable).start()
     }
 
-    private abstract inner class AWebApiRunnable(private val mCallback: ((String, Boolean) -> Unit)?)
+    private abstract inner class AWebApiRunnable(protected val mUrl: URL,
+                                                 protected val mRequestMethod: String,
+                                                 private val mCallback: ((String, Boolean) -> Unit)?)
         : Runnable {
 
         protected val mUsername = LoginActivity.username   // TODO
         protected val mPassword = LoginActivity.password   // TODO
 
         protected fun postResponse(response: String, error: Boolean) {
-            val mainHandler = Handler(Looper.getMainLooper())
-            mainHandler.post {
+            Handler(Looper.getMainLooper()).post {
                 // post to UI thread
                 this.mCallback?.invoke(response, error)
             }
@@ -56,9 +69,10 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
         }
     }
 
-    private inner class WebApiGetRunnable(private val mUrl: URL,
+    private inner class WebApiGetRunnable(url: URL,
+                                          requestMethod: String,
                                           callback: ((String, Boolean) -> Unit)?)
-        : AWebApiRunnable(callback) {
+        : AWebApiRunnable(url, requestMethod, callback) {
 
         @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
@@ -70,11 +84,16 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                     val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
                     val encoded: String = Base64.getEncoder().encodeToString(message)
                     setRequestProperty("Authorization", "Basic $encoded")
-                    requestMethod = "GET"
+                    requestMethod = mRequestMethod
 
-                    Log.d(Constants.WEBAPI_TAG, "GET response code: $responseCode")
+                    Log.d(TAG, "GET response code: $responseCode")
                     if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
-                        handleNotAuthenticated();
+                        handleNotAuthenticated()
+                        return
+                    }
+
+                    if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
+                        postResponse("", false)
                         return
                     }
 
@@ -92,10 +111,11 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
         }
     }
 
-    private inner class WebApiPostRunnable(private val mUrl: URL,
+    private inner class WebApiPostRunnable(url: URL,
+                                           requestMethod: String,
                                            private val mData: String,
                                            callback: ((String, Boolean) -> Unit)?)
-        : AWebApiRunnable(callback) {
+        : AWebApiRunnable(url, requestMethod, callback) {
 
         @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
@@ -108,7 +128,7 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                     val encoded: String = Base64.getEncoder().encodeToString(message)
                     setRequestProperty("Authorization", "Basic $encoded")
                     setRequestProperty("Content-Type", "application/json; utf-8")
-                    requestMethod = "POST"
+                    requestMethod = mRequestMethod
                     doOutput = true
 
                     outputStream.use { os ->
@@ -116,9 +136,9 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                         os.write(input, 0, input.size)
                     }
 
-                    Log.d(Constants.WEBAPI_TAG, "POST response code: $responseCode")
+                    Log.d(TAG, "POST response code: $responseCode")
                     if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
-                        handleNotAuthenticated();
+                        handleNotAuthenticated()
                         return
                     }
 

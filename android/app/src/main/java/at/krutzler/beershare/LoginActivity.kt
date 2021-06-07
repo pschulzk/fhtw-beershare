@@ -1,6 +1,8 @@
 package at.krutzler.beershare
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,39 +14,60 @@ import at.krutzler.beershare.webapi.WebApiClient
 class LoginActivity : AppCompatActivity() {
 
     companion object {
+        private const val TAG = "LoginActivity"
+        private const val PREFS_NAME = "at.krutzler.beershare.prefs.login"
+        private const val PREFS_USERNAME_STRING = "username"
+
         var username = ""
         var password = ""
     }
 
-    object Constants {
-        const val LOGIN_TAG = "LoginActivity"
-    }
+    private lateinit var mPrefs: SharedPreferences
+    private lateinit var mEtUsername: EditText
+    private lateinit var mEtPassword: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        title = getString(R.string.loginTitle)
+        mPrefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        testLogin()
+        // find views
+        mEtUsername = findViewById(R.id.etUsername)
+        mEtPassword = findViewById(R.id.etPassword)
 
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        btnLogin.setOnClickListener{
-            val etUsername: EditText = findViewById(R.id.etUsername)
-            val etPassword: EditText = findViewById(R.id.etPassword)
+        // testLogin()
 
-            username = etUsername.text.toString()
-            password = etPassword.text.toString()
+        findViewById<Button>(R.id.btnLogin).setOnClickListener {
+            username = mEtUsername.text.toString()
+            password = mEtPassword.text.toString()
 
-            val client = WebApiClient {
-                Log.d(Constants.LOGIN_TAG, "Authentication failed")
+            WebApiClient {
+                Log.d(TAG, "Authentication failed")
                 Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_LONG).show()
-            }
-
-            client.get("beercellar") { _, error ->
-                if (!error) {
-                    val intent = Intent(this, BeerCellarListActivity::class.java)
-                    startActivity(intent)
+            }.also { client ->
+                client.get("auth") { _, error ->
+                    if (!error) {
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             }
+        }
+    }
+
+    override fun onPause() {
+        mPrefs.edit().putString(PREFS_USERNAME_STRING, username).apply()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        password = ""
+        mPrefs.getString(PREFS_USERNAME_STRING, null)?.let {
+            username = it
+            mEtUsername.setText(it)
         }
     }
 
@@ -52,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
         username = "tester"
         password = "tester"
 
-        val intent = Intent(this, BeerCellarListActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
         // start your next activity
         startActivity(intent)
     }

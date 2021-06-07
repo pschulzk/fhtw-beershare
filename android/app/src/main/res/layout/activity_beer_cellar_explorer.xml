@@ -7,9 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".BeerCellarExplorerActivity">
 
-    <org.osmdroid.views.MapView
-        android:id="@+id/beerMap"
+
+    <FrameLayout
+        android:id="@+id/flOsmFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 </LinearLayout>

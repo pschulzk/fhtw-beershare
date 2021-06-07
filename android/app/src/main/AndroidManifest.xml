@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BeerShare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".BeerCellarActivity"></activity>
+        <activity android:name=".BeerOrderActivity"></activity>
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".BeerCellarEntryActivity" />
+        <activity android:name=".BeerCellarActivity" />
         <activity android:name=".BeerCellarExplorerActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

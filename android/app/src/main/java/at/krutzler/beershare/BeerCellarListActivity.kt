@@ -13,62 +13,57 @@ import at.krutzler.beershare.webapi.WebApiClient
 
 class BeerCellarListActivity : AppCompatActivity() {
 
-    object Constants {
-        const val TAG = "BeerCellarListActivity"
+    companion object {
+        private const val TAG = "BeerCellarListActivity"
+        const val EDIT_CELLAR_REQUEST_CODE = 1
     }
 
+    private lateinit var mClient: WebApiClient
+
     private lateinit var mBeerCellarListAdapter: BeerCellarListAdapter
-    private lateinit var mBtnExplore: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_beer_cellar_list)
+        title = getString(R.string.beerCellarListTitle)
 
-        val client = WebApiClient {
-            Log.d(Constants.TAG, "Not authenticated: TODO login")
+        mClient = WebApiClient {
+            Log.d(TAG, "Not authenticated: TODO login")
         }
 
-        mBtnExplore = findViewById(R.id.btnExplore)
-        mBtnExplore.setOnClickListener {
-            val intent = Intent(this, BeerCellarExplorerActivity::class.java)
-            startActivity(intent)
+        findViewById<Button>(R.id.btnAddBeerCellar).setOnClickListener {
+            val intent = Intent(this, BeerCellarActivity::class.java)
+            startActivityForResult(intent, EDIT_CELLAR_REQUEST_CODE)
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.rvBeerCellar)
         mBeerCellarListAdapter = BeerCellarListAdapter(listOf()) { beerCellar, position ->
             // beer cellar was clicked
-            Log.d(Constants.TAG, "$beerCellar, $position")
+            Log.d(TAG, "$beerCellar, $position")
             val intent = Intent(this, BeerCellarActivity::class.java)
-            intent.putExtra("id", beerCellar)
-            startActivity(intent)
+            intent.putExtra(BeerCellarActivity.BEER_CELLAR_PARCELABLE_EXTRA, beerCellar)
+            startActivityForResult(intent, EDIT_CELLAR_REQUEST_CODE)
         }
 
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = mBeerCellarListAdapter
 
-        val beerCellarRepository = BeerCellarRepository(client)
-        beerCellarRepository.getAll {
-            Log.d(Constants.TAG, it.toString())
+        updateBeerCellars()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            EDIT_CELLAR_REQUEST_CODE -> updateBeerCellars()
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun updateBeerCellars() {
+        BeerCellarRepository(mClient).getAll {
+            Log.d(TAG, "Beer cellars received: $it")
             mBeerCellarListAdapter.swapData(it)
-        }
-
-        beerCellarRepository.getById(1) {
-            Log.d(Constants.TAG, it.toString())
-        }
-
-        val newCellar = BeerCellarRepository.BeerCellar(
-            "TestKeller",
-            48.23953,
-            16.377255,
-            "",
-            "Teststraße 123",
-            "1234",
-            "Wien",
-            "Austria"
-        )
-        beerCellarRepository.add(newCellar) {
-            Log.d(Constants.TAG, it.toString())
         }
     }
 }
