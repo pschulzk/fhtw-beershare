@@ -67,7 +67,7 @@ class BeerCellar(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f"{self.owner}: {self.name}"
 
 
 class BeerCellarEntry(models.Model):
@@ -87,7 +87,7 @@ class BeerCellarEntry(models.Model):
     )
 
     def __str__(self):
-        return f"{self.beerCellar.name} ({self.beer})"
+        return f"{self.beerCellar} ({self.beer})"
 
 
 class BeerOrder(models.Model):
