@@ -81,18 +81,13 @@ class AbsoluteBeerCellarEntrySerializer(BeerCellarEntrySerializer):
 
 
 class BeerOrderSerializer(serializers.ModelSerializer):
-    class SellerBeerCellarEntryField(serializers.PrimaryKeyRelatedField):
-        def get_queryset(self):
-            return models.BeerCellarEntry.objects.exclude(beerCellar__owner=self.context['request'].user)
 
-    status = serializers.ReadOnlyField()
     buyer = serializers.ReadOnlyField(source='user.username')
-    beerCellarEntry = SellerBeerCellarEntryField()  # only entries from other users
-    beerName = serializers.ReadOnlyField(source="beerCellarEntry.beer.beer_name")
+    beerName = serializers.ReadOnlyField(source="beer.beer_name")
 
     class Meta:
         model = models.BeerOrder
-        fields = ['id', 'amount', 'status', 'datetime', 'beerCellarEntry', 'buyer', 'beerName']
+        fields = ['id', 'amount', 'status', 'datetime', 'beerCellar', 'beer', 'buyer', 'beerName']
 
 
 # special

@@ -3,6 +3,7 @@ from django.db.models.functions import Radians, Power, Cos, Sin, ATan2, Sqrt
 
 from . import models
 from . import serializers
+from . import permissions
 
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
@@ -103,7 +104,7 @@ class BeerOrderList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         # return entries as seller & as buyer
-        return models.BeerOrder.objects.filter(beerCellarEntry__beerCellar__owner=self.request.user) | \
+        return models.BeerOrder.objects.filter(beerCellar__owner=self.request.user) | \
                    models.BeerOrder.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
@@ -116,5 +117,5 @@ class BeerOrderDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         # return entries as seller & as buyer
-        return models.BeerOrder.objects.filter(beerCellarEntry__beerCellar__owner=self.request.user) | \
+        return models.BeerOrder.objects.filter(beerCellar__owner=self.request.user) | \
                    models.BeerOrder.objects.filter(user=self.request.user)

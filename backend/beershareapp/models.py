@@ -107,11 +107,18 @@ class BeerOrder(models.Model):
         auto_now_add=True,
         blank=True
     )
-    beerCellarEntry = models.ForeignKey(
-        BeerCellarEntry,
+    beerCellar = models.ForeignKey(
+        BeerCellar,
         on_delete=models.CASCADE
+    )
+    beer = models.ForeignKey(
+        Beer,
+        on_delete=models.PROTECT
     )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE
     )
+
+    class Meta:
+        ordering = ["datetime"]
