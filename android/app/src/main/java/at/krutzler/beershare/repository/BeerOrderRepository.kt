@@ -1,20 +1,33 @@
 package at.krutzler.beershare.repository
 
+import android.os.Parcelable
 import at.krutzler.beershare.webapi.WebApiClient
+import kotlinx.android.parcel.Parcelize
 import org.json.JSONArray
 import org.json.JSONObject
 
 class BeerOrderRepository(private val mClient: WebApiClient) {
 
+    @Parcelize
     data class BeerOrder(
             val id: Int,
             val amount: Int,
-            val status: Int,
+            var status: Int,
             val datetime: String,
-            val beerCellarEntry: Int,
+            val beerCellar: Int,
+            val beer: Int,
             val buyer: String,
             val beerName: String
-    )
+    ) : Parcelable
+    {
+        fun statusString(): String = when (status) {
+            1 -> "Neu"
+            2 -> "Akzeptiert"
+            3 -> "Abgelehnt"
+            4 -> "Abgeschlossen"
+            else -> "Invalid"
+        }
+    }
 
     fun getAll(callback: ((List<BeerOrder>)->Unit)) {
         mClient.get("beerorder/") { response, error ->
@@ -32,6 +45,26 @@ class BeerOrderRepository(private val mClient: WebApiClient) {
         }
     }
 
+    fun update(beerOrder: BeerOrder, callback: (Boolean)->Unit) {
+        mClient.put("beerorder/${beerOrder.id}", toJson(beerOrder).toString()) { _, error ->
+            callback.invoke(error)
+        }
+    }
+
+    fun add(amount: Int, beerCellarId: Int, beerId: Int, callback: (Boolean)->Unit) {
+        val entry = JSONObject("""
+                {
+                    "amount": $amount,
+                    "status": 1,
+                    "beerCellar": $beerCellarId,
+                    "beer": $beerId
+                }
+        """)
+        mClient.post("beerorder/", entry.toString()) { _, error ->
+            callback.invoke(error)
+        }
+    }
+
     private companion object {
          fun fromJson(item: JSONObject): BeerOrder {
              return BeerOrder(
@@ -39,17 +72,21 @@ class BeerOrderRepository(private val mClient: WebApiClient) {
                      item.getInt(BeerOrder::amount.name),
                      item.getInt(BeerOrder::status.name),
                      item.getString(BeerOrder::datetime.name),
-                     item.getInt(BeerOrder::beerCellarEntry.name),
+                     item.getInt(BeerOrder::beerCellar.name),
+                     item.getInt(BeerOrder::beer.name),
                      item.getString(BeerOrder::buyer.name),
                      item.getString(BeerOrder::beerName.name)
              )
         }
 
-        fun toJson(beerCellar: BeerOrder): JSONObject {
+        fun toJson(beerOrder: BeerOrder): JSONObject {
             return JSONObject("""
                 {
-                    "amount": "${beerCellar.amount}"
-                    "beerCellarEntry": "${beerCellar.beerCellarEntry}"
+                    "id": ${beerOrder.id},
+                    "amount": "${beerOrder.amount}",
+                    "status": "${beerOrder.status}",
+                    "beerCellar": "${beerOrder.beerCellar}",
+                    "beer": "${beerOrder.beer}"
                 }
             """)
         }

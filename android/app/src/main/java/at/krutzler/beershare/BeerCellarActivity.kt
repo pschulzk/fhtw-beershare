@@ -32,6 +32,7 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
         const val EDIT_ENTRY_REQUEST_CODE = 1
 
         const val BEER_CELLAR_PARCELABLE_EXTRA = "beerCellar"
+        const val ORDER_MODE_EXTRA = "orderMode"
     }
 
     private lateinit var mClient: WebApiClient
@@ -46,13 +47,21 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
 
     private var mBeerCellar: BeerCellarRepository.BeerCellar? = null
     private var mNewAddress: Address? = null
+    private var mOrderMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_beer_cellar)
-        title = getString(R.string.beerCellarTitle)
 
         mBeerCellar = intent.getParcelableExtra(BEER_CELLAR_PARCELABLE_EXTRA)
+        mOrderMode = intent.getBooleanExtra(ORDER_MODE_EXTRA, false)
+
+        title = if (mOrderMode) {
+            "Bierkeller von ${mBeerCellar?.owner}"
+        } else {
+            getString(R.string.beerCellarTitle)
+        }
+
         mClient = WebApiClient {
             Log.d(TAG, "Not authenticated: TODO login")
         }
@@ -95,10 +104,19 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
             // beer cellar entry was clicked
             Log.d(TAG, "$beerCellarEntry, $position")
 
-            val intent = Intent(this, BeerCellarEntryActivity::class.java)
-            intent.putExtra(BeerCellarEntryActivity.BEER_CELLAR_PARCELABLE_EXTRA, mBeerCellar)
-            intent.putExtra(BeerCellarEntryActivity.BEER_CELLAR_ENTRY_POSITION_EXTRA, position)
-            startActivityForResult(intent, EDIT_ENTRY_REQUEST_CODE)
+            if (!mOrderMode) {
+                // edit beer entry
+                val intent = Intent(this, BeerCellarEntryActivity::class.java)
+                intent.putExtra(BeerCellarEntryActivity.BEER_CELLAR_PARCELABLE_EXTRA, mBeerCellar)
+                intent.putExtra(BeerCellarEntryActivity.BEER_CELLAR_ENTRY_POSITION_EXTRA, position)
+                startActivityForResult(intent, EDIT_ENTRY_REQUEST_CODE)
+            } else {
+                // place new beer order
+                val intent = Intent(this, BeerOrderActivity::class.java)
+                intent.putExtra(BeerOrderActivity.BEER_CELLAR_PARCELABLE_EXTRA, mBeerCellar)
+                intent.putExtra(BeerOrderActivity.BEER_CELLAR_ENTRY_POSITION_EXTRA, position)
+                startActivity(intent)
+            }
         }
 
         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
@@ -110,6 +128,10 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
             // beerCellar exists
             mEtBeerCellarName.setText(beerCellar.name)
             mEtBeerCellarAddress.setText(beerCellar.address)
+
+            if (mOrderMode) {
+                btnAddBeer.visibility = View.GONE
+            }
 
             updateBeerCellar()
         } ?: run {

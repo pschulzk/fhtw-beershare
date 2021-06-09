@@ -105,17 +105,19 @@ class BeerCellarEntryActivity : AppCompatActivity() {
             Log.d(TAG, "Done")
 
             mBeerCellar?.also { beerCellar ->
-                val repo = BeerCellarEntryRepository(mClient)
-                val amount = mEtBeerCellarEntryAmount.text.toString().toInt()
-
-                mAbsoluteBeerCellarEntry?.let { absoluteBeerCellarEntry ->
-                    repo.addAbsolute(amount, beerCellar.id, absoluteBeerCellarEntry.beer) {
-                        finish()
+                mEtBeerCellarEntryAmount.text.toString().toIntOrNull()?.let { amount ->
+                    val repo = BeerCellarEntryRepository(mClient)
+                    mAbsoluteBeerCellarEntry?.let { absoluteBeerCellarEntry ->
+                        repo.addAbsolute(amount, beerCellar.id, absoluteBeerCellarEntry.beer) {
+                            finish()
+                        }
+                    }?: run {
+                        repo.add(amount, beerCellar.id, mSelectedBeer?.id ?: 0) {
+                            finish()
+                        }
                     }
-                }?: run {
-                    repo.add(amount, beerCellar.id, mSelectedBeer?.id ?: 0) {
-                        finish()
-                    }
+                } ?: run {
+                    Log.d(TAG, "invalid amount entered")
                 }
             }
             true

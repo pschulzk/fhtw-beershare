@@ -16,7 +16,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnOrders).setOnClickListener {
-            val intent = Intent(this, BeerOrderActivity::class.java)
+            val intent = Intent(this, BeerOrderListActivity::class.java)
             startActivity(intent)
         }
 

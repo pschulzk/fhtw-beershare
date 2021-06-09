@@ -29,7 +29,7 @@ internal class BeerOrderListAdapter(private var mItems: List<BeerOrder>,
         fun bind(item: BeerOrder) {
             tvName.text = item.beerName
             tvAmount.text = item.amount.toString()
-            tvStatus.text = statusFromInt(item.status)
+            tvStatus.text = item.statusString()
         }
     }
 
@@ -51,13 +51,5 @@ internal class BeerOrderListAdapter(private var mItems: List<BeerOrder>,
     fun swapData(items: List<BeerOrder>) {
         this.mItems = items
         notifyDataSetChanged()
-    }
-
-    private fun statusFromInt(status: Int): String = when (status) {
-        1 -> "Neu"
-        2 -> "Akzeptiert"
-        3 -> "Abgelehnt"
-        4 -> "Abgeschlossen"
-        else -> "Invalid"
     }
 }

@@ -8,4 +8,6 @@
     <string name="beerCellarListTitle">Meine Bierkeller</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="acceptBeerOrder">Okay</string>
+    <string name="declineBeerOrder">Ablehnen</string>
 </resources>

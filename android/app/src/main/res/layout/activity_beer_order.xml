@@ -10,137 +10,74 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/llIncomingHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginBottom="8dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
 
+        <!-- text is set for testing only -->
         <TextView
-            android:text="Eingehende Bestellungen"
+            android:text="Ottakringer"
 
+            android:id="@+id/tvOrderName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="12dp"/>
+            android:layout_weight="1"/>
 
-        <LinearLayout
+        <TextView
+            android:text="24"
+
+            android:id="@+id/tvOrderAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:textSize="16sp"
+            android:layout_weight="2"
+            android:gravity="center" />
 
-            <TextView
-                android:text="Biersorten"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingBottom="4dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:text="Menge"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"
-                android:layout_weight="1" />
-
-            <TextView
-                android:text="Status"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <View
+        <TextView
+            android:text="Akzeptiert"
+            android:visibility="gone"
+            android:id="@+id/tvOrderStatus"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvIncomingBeerOrders"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
     </LinearLayout>
 
-
+    <EditText
+        android:id="@+id/etOrderAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:inputType="number"/>
 
     <LinearLayout
-        android:id="@+id/llOutgoingHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        android:layout_weight="1">
-
-        <TextView
-            android:text="Ausgehende Bestellungen"
-
+        <Button
+            android:id="@+id/btnAcceptBeerOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="12dp"/>
+            android:layout_weight="3"
+            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="@string/acceptBeerOrder"
+            android:drawableLeft="@drawable/ic_baseline_done_24"
+            android:drawableTint="@color/white"/>
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btnDeclineBeerOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:text="Biersorten"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingBottom="4dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:text="Menge"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"
-                android:layout_weight="1" />
-
-            <TextView
-                android:text="Status"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvOutgoingBeerOrders"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_weight="3"
+            android:text="@string/declineBeerOrder"
+            android:drawableLeft="@drawable/ic_outline_cancel_24"
+            android:drawableTint="@color/white"/>
 
     </LinearLayout>
+
 </LinearLayout>

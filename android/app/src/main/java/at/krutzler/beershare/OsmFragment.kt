@@ -2,6 +2,7 @@ package at.krutzler.beershare
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
@@ -245,9 +246,16 @@ class OsmFragment : Fragment() {
                 title = beerCellar.name
                 snippet = beerCellar.owner
                 icon = beerIcon
-                setOnMarkerClickListener { marker, mapView -> Boolean
+                setOnMarkerClickListener { marker, _ -> Boolean
                     Log.d(TAG, marker.toString())
-                    marker.showInfoWindow()
+                    // marker.showInfoWindow()
+
+                    val intent = Intent(requireContext(), BeerCellarActivity::class.java)
+                    intent.putExtra(BeerCellarActivity.BEER_CELLAR_PARCELABLE_EXTRA, beerCellar)
+                    intent.putExtra(BeerCellarActivity.ORDER_MODE_EXTRA, true)
+
+                    startActivity(intent)
+
                     true
                 }
                 mMapView.overlays.add(this)

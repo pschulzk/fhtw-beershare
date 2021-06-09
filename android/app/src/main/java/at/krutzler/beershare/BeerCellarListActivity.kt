@@ -15,7 +15,7 @@ class BeerCellarListActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "BeerCellarListActivity"
-        const val EDIT_CELLAR_REQUEST_CODE = 1
+        private const val EDIT_CELLAR_REQUEST_CODE = 1
     }
 
     private lateinit var mClient: WebApiClient
