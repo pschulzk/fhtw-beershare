@@ -1,4 +1,4 @@
-from django.db.models import F
+from django.db.models import F, Sum
 from django.db.models.functions import Radians, Power, Cos, Sin, ATan2, Sqrt
 
 from . import models
@@ -9,6 +9,7 @@ from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import permissions as rest_permissions
+from rest_framework import serializers as rest_serializers
 
 
 @api_view(['GET'])
@@ -67,7 +68,7 @@ class NearbyBeerCellarList(generics.ListAPIView):
 
 
 class BeerCellarDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [rest_permissions.IsAuthenticated]
+    permission_classes = [rest_permissions.IsAuthenticated, permissions.IsOwnerOrReadOnly]
     serializer_class = serializers.BeerCellarDetailSerializer
     queryset = models.BeerCellar.objects.all()
 
@@ -119,3 +120,20 @@ class BeerOrderDetail(generics.RetrieveUpdateDestroyAPIView):
         # return entries as seller & as buyer
         return models.BeerOrder.objects.filter(beerCellar__owner=self.request.user) | \
                    models.BeerOrder.objects.filter(user=self.request.user)
+
+    def perform_update(self, serializer):
+
+        if serializer.validated_data.get('status') == models.BeerOrder.Status.DONE:
+            # reduce beer amount
+            beer_cellar = serializer.validated_data.get('beerCellar')
+            beer = serializer.validated_data.get('beer')
+            total_amount = models.BeerCellarEntry.objects.filter(beerCellar=beer_cellar, beer=beer) \
+                .aggregate(a=Sum('amount'))
+
+            amount = serializer.validated_data.get('amount')
+            if amount <= int(total_amount['a']):
+                models.BeerCellarEntry(amount=-amount, beerCellar=beer_cellar, beer=beer).save()
+            else:
+                raise rest_serializers.ValidationError({"detail": "not enough beer"})
+
+        super().perform_update(serializer)
