@@ -20,7 +20,6 @@
 		83468725266948D20051C101 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83468724266948D20051C101 /* Order.swift */; };
 		83468727266951F50051C101 /* OrderList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83468726266951F50051C101 /* OrderList.swift */; };
 		83636473266ACE65007C4618 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636472266ACE65007C4618 /* Location.swift */; };
-		839CC1E726740B2200637E48 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839CC1E626740B2200637E48 /* UserData.swift */; };
 		83EC221E26696D4300467F6B /* BierkellerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EC221D26696D4300467F6B /* BierkellerDetailView.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +39,6 @@
 		83468724266948D20051C101 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		83468726266951F50051C101 /* OrderList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderList.swift; sourceTree = "<group>"; };
 		83636472266ACE65007C4618 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		839CC1E626740B2200637E48 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		83EC221D26696D4300467F6B /* BierkellerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BierkellerDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +56,6 @@
 		83306EE02668F7D7009E6FC8 = {
 			isa = PBXGroup;
 			children = (
-				839CC1E626740B2200637E48 /* UserData.swift */,
 				83636472266ACE65007C4618 /* Location.swift */,
 				83468726266951F50051C101 /* OrderList.swift */,
 				83468724266948D20051C101 /* Order.swift */,
@@ -195,7 +192,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				839CC1E726740B2200637E48 /* UserData.swift in Sources */,
 				83EC221E26696D4300467F6B /* BierkellerDetailView.swift in Sources */,
 				83636473266ACE65007C4618 /* Location.swift in Sources */,
 				8346872126693F8C0051C101 /* ManagementDetailView.swift in Sources */,

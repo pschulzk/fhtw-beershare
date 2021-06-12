@@ -8,11 +8,11 @@
 import Foundation
 
 class UserData {
-    func connect(url: String){
+    func connect(urlString: String){
         guard let url = URL(string: urlString) else {
             print("Cannot convert URL")
         }
-        let task = URLSession.shared.dataTask(with: with: url){
+        let task = URLSession.shared.dataTask(with: url){
             data, response, error in
             guard error == nil else {
                 print("Cannot open URL \(url). System error: \(error!).")
@@ -22,7 +22,7 @@ class UserData {
                 print("Data is nil")
                 return
             }
-            guard let responseString = String(data: responseData, encoding: <#T##String.Encoding#>.utf8)
+            guard let responseString = String(data: responseData, encoding: String.Encoding.utf8)
             else {
                 print("Could not convert data to string.")
                 return
@@ -34,6 +34,6 @@ class UserData {
         }
         task.resume()
     }
-    
-    connect(urlString: "https://www.beershare.api")
+
 }
+
