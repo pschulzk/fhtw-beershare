@@ -10,40 +10,44 @@ import SwiftUI
 struct BierkellerView: View {
     
     @State private var items = [BeerCellar]()
+    private var client = WebApiClient()
     
     var body: some View {
-        VStack{
-            NavigationLink(destination: ManagementDetailView()) {
-                Image("AddKeller")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(5)
+        VStack {
+            VStack {
+                NavigationLink(destination: ManagementDetailView()) {
+                    Image("AddKeller")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(5)
 
-            }
-            .padding(.horizontal, 50.0)
-            .padding(.vertical, 20.0)
-            List{
-                ForEach(self.items) { item in
-                    NavigationLink(destination: BierkellerDetailView()) {
-                        Text("Bierkeller 1")
+                }
+                .padding(.horizontal, 50.0)
+                .padding(.vertical, 20.0)
+                
+                List {
+                    ForEach(items, id: \.self) { item in
+                        VStack(alignment: .leading) {
+                            NavigationLink(destination: BierkellerDetailView()) {
+                                Text(item.name)
+                            }
+                        }
                     }
                 }
-            }
-            .onAppear(perform: {
-                WebApiClient.loadData(additiveUrl: "beercellar", callback: { result in
-                    self.items = result
+                .onAppear(perform: {
+                    client.getData(additiveUrl: "beercellar", callback: { result in
+                        self.items = result
+                    })
                 })
-            })
-            
+                
+
+            }
+            .navigationBarTitle("Meine Bierkeller")
+            .navigationBarTitleDisplayMode(.inline)
+            .listStyle(PlainListStyle())
         }
-        .navigationBarTitle("Meine Bierkeller")
-        .navigationBarTitleDisplayMode(.inline)
-        .listStyle(PlainListStyle())
     }
     
-    func loadData(){
-        
-    }
 }
 
 

@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Address
-struct Address: Codable {
+struct Address: Codable, Hashable {
     let address, zipCode, city, country: String
 
     enum CodingKeys: String, CodingKey {

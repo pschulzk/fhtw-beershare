@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct TestView: View {
-    @State private var items = [Beer]()
+    @State private var beerList = [Beer]()
+    private var client = WebApiClient()
     
     var body: some View {
         List(beerList, id: \.id) { item in
@@ -20,7 +21,7 @@ struct TestView: View {
                     }
         }
         .onAppear(perform: {
-            WebApiClient.loadData(additiveUrl: "beer", callback: { result in
+            client.getData(additiveUrl: "beer", callback: { result in
                 self.beerList = result
             })
             
