@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct OrderManagementView: View {
-
+    
     var body: some View {
+        
         VStack{
             VStack{
                 Text("Eingehende Bestellungen")

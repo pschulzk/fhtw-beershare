@@ -7,13 +7,8 @@
 
 import Foundation
 
-class Package : Codable {
+struct Package : Codable {
     var sorte : String
     var anzahl : Int
-    
-    init(sorte: String, anzahl: Int){
-        self.sorte = sorte
-        self.anzahl = anzahl
-    }
 }
 

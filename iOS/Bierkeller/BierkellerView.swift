@@ -30,13 +30,19 @@ struct BierkellerView: View {
                     Text("Bierkeller 3")
                 }
             }
+//            .onAppear(loadData())
             
         }
         .navigationBarTitle("Meine Bierkeller")
         .navigationBarTitleDisplayMode(.inline)
         .listStyle(PlainListStyle())
     }
+    
+    func loadData(){
+        
+    }
 }
+
 
 struct BierkellerView_Previews: PreviewProvider {
     static var previews: some View {

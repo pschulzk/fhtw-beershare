@@ -7,13 +7,7 @@
 
 import Foundation
 
-class Order : Codable {
+struct Order : Codable {
     var status : String
     var package : Package
-    
-    init(package: Package, status: String) {
-        self.package = package
-        self.status = status
-        
-    }
 }
