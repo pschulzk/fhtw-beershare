@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct BierkellerView: View {
+    
+    @State private var items = [BeerCellar]()
+    
     var body: some View {
         VStack{
             NavigationLink(destination: ManagementDetailView()) {
@@ -20,17 +23,17 @@ struct BierkellerView: View {
             .padding(.horizontal, 50.0)
             .padding(.vertical, 20.0)
             List{
-                NavigationLink(destination: BierkellerDetailView()) {
-                    Text("Bierkeller 1")
-                }
-                NavigationLink(destination: BierkellerDetailView()) {
-                    Text("Bierkeller 2")
-                }
-                NavigationLink(destination: BierkellerDetailView()) {
-                    Text("Bierkeller 3")
+                ForEach(self.items) { item in
+                    NavigationLink(destination: BierkellerDetailView()) {
+                        Text("Bierkeller 1")
+                    }
                 }
             }
-//            .onAppear(loadData())
+            .onAppear(perform: {
+                WebApiClient.loadData(additiveUrl: "beercellar", callback: { result in
+                    self.items = result
+                })
+            })
             
         }
         .navigationBarTitle("Meine Bierkeller")

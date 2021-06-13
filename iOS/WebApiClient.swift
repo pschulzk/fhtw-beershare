@@ -4,14 +4,12 @@
 //
 //  Created by Chris on 12.06.21.
 //
-
 import Foundation
 
-class WebApiClient: ObservableObject {
-    
+class WebApiClient {
 
-    func loadData<T>(additiveUrl: String, callback: @escaping (_ response: T) -> Void) {
-        var returnList : [T]
+    static func loadData<T : Decodable>(additiveUrl: String, callback: @escaping (_ response: T) -> Void) {
+
         let baseURL = "http://0.0.0.0:8000/api/v1/"
         let urlString = baseURL + additiveUrl
             
@@ -19,20 +17,20 @@ class WebApiClient: ObservableObject {
             print("invalid URL")
             return
         }
+
         let request = URLRequest(url: url)
-        URLSession.shared.dataTask(with: request){data, response, error in
+        URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
-                if let decodedResponse = try? JSONDecoder().decode([Beer].self, from: data){
+                if let decodedResponse = try? JSONDecoder().decode(T.self, from: data){
                     DispatchQueue.main.async{
-                        returnList = decodedResponse
-                        callback(returnList)
+                        callback(decodedResponse)
+                        // everything worked
+                        print("GET Request successful")
                     }
-                    // everything worked
-                    print("GET Request successful")
                     return
                 }
             }
-         // if we're still here there was a problem
+            // if we're still here there was a problem
             print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
         
         }.resume()
