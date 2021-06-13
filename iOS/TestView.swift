@@ -19,7 +19,20 @@ struct TestView: View {
                         Text(item.country)
                     }
         }
-        .onAppear(perform: loadData)
+        .onAppear(perform: {
+            WebApiClient.loadData(additiveUrl: "beer", callback: { result in
+                self.beerList = result
+            })
+            
+            /*
+                The following is the more extended, readable version of the above:
+
+                func myCallBack(mydata: [Beer]) {
+                    self.beerList = mydata
+                }
+                WebApiClient.loadData(additiveUrl: "beer", callback: myCallBack)
+            */
+        })
     }
     
     func loadData(){
