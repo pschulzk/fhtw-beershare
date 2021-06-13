@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TestView: View {
-    @State private var beerList = [Beer]()
+    @State private var items = [Beer]()
     
     var body: some View {
         List(beerList, id: \.id) { item in
