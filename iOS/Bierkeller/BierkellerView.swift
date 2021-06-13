@@ -13,32 +13,35 @@ struct BierkellerView: View {
     
     var body: some View {
         VStack{
-            NavigationLink(destination: ManagementDetailView()) {
-                Image("AddKeller")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(5)
+            VStack{
+                NavigationLink(destination: ManagementDetailView()) {
+                    Image("AddKeller")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(5)
 
-            }
-            .padding(.horizontal, 50.0)
-            .padding(.vertical, 20.0)
-            List{
-                ForEach(self.items) { item in
-                    NavigationLink(destination: BierkellerDetailView()) {
-                        Text("Bierkeller 1")
+                }
+                .padding(.horizontal, 50.0)
+                .padding(.vertical, 20.0)
+                List{
+                    ForEach(self.items) { item in
+                        NavigationLink(destination: BierkellerDetailView()) {
+                            Text("Bierkeller 1")
+                        }
                     }
                 }
-            }
-            .onAppear(perform: {
-                WebApiClient.loadData(additiveUrl: "beercellar", callback: { result in
-                    self.items = result
+                .onAppear(perform: {
+                    WebApiClient.loadData(additiveUrl: "beercellar", callback: { result in
+                        self.items = result
+                    })
                 })
-            })
-            
-        }
-        .navigationBarTitle("Meine Bierkeller")
-        .navigationBarTitleDisplayMode(.inline)
-        .listStyle(PlainListStyle())
+                
+            }
+            .navigationBarTitle("Meine Bierkeller")
+            .navigationBarTitleDisplayMode(.inline)
+            .listStyle(PlainListStyle())
+
+        
     }
     
     func loadData(){

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		832CEC3A266E8032002CE2F5 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832CEC39266E8032002CE2F5 /* OrderView.swift */; };
+		832D964A2676476000D14C1D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832D96492676476000D14C1D /* MapView.swift */; };
 		83306EED2668F7D7009E6FC8 /* BeerShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83306EEC2668F7D7009E6FC8 /* BeerShareApp.swift */; };
 		83306EEF2668F7D7009E6FC8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83306EEE2668F7D7009E6FC8 /* MainView.swift */; };
 		83306EF12668F7D9009E6FC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83306EF02668F7D9009E6FC8 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		832CEC39266E8032002CE2F5 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
+		832D96492676476000D14C1D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		83306EE92668F7D7009E6FC8 /* BeerShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeerShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83306EEC2668F7D7009E6FC8 /* BeerShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerShareApp.swift; sourceTree = "<group>"; };
 		83306EEE2668F7D7009E6FC8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 			children = (
 				83306EFD26692AC7009E6FC8 /* OrderPositionView.swift */,
 				832CEC39266E8032002CE2F5 /* OrderView.swift */,
+				832D96492676476000D14C1D /* MapView.swift */,
 			);
 			path = BeerSearch;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				8346871626692CAB0051C101 /* BierkellerView.swift in Sources */,
 				83306EFE26692AC7009E6FC8 /* OrderPositionView.swift in Sources */,
 				83DF103426752BD0001C708B /* Beer.swift in Sources */,
+				832D964A2676476000D14C1D /* MapView.swift in Sources */,
 				E809C1E1267627B2007899B6 /* Address.swift in Sources */,
 				83306EEF2668F7D7009E6FC8 /* MainView.swift in Sources */,
 				832CEC3A266E8032002CE2F5 /* OrderView.swift in Sources */,
