@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 struct MainView: View {
     func loadData(){
         
@@ -18,7 +17,7 @@ struct MainView: View {
             HStack{
                 VStack{
                     Spacer()
-                    NavigationLink(destination: TestView()){//OrderPositionView()) {
+                    NavigationLink(destination: TestMapView()){//OrderPositionView()) {
                         Image("Biersuche")
                             .resizable()
                             .aspectRatio(contentMode: .fit)

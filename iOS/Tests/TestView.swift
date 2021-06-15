@@ -11,7 +11,7 @@ struct TestView: View {
     @State private var items = [Beer]()
     
     var body: some View {
-        List(beerList, id: \.id) { item in
+        List(items, id: \.id) { item in
                     VStack(alignment: .leading) {
                         Text(item.brand)
                         Text(item.type)
@@ -21,7 +21,7 @@ struct TestView: View {
         }
         .onAppear(perform: {
             WebApiClient.loadData(additiveUrl: "beer", callback: { result in
-                self.beerList = result
+                self.items = result
             })
             
             /*
@@ -45,7 +45,7 @@ struct TestView: View {
             if let data = data {
                 if let decodedResponse = try? JSONDecoder().decode([Beer].self, from: data){
                     DispatchQueue.main.async{
-                        self.beerList = decodedResponse
+                        self.items = decodedResponse
                         
                     }
                     // everything worked

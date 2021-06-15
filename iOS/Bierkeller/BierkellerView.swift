@@ -12,7 +12,6 @@ struct BierkellerView: View {
     @State private var items = [BeerCellar]()
     
     var body: some View {
-        VStack{
             VStack{
                 NavigationLink(destination: ManagementDetailView()) {
                     Image("AddKeller")
@@ -23,18 +22,18 @@ struct BierkellerView: View {
                 }
                 .padding(.horizontal, 50.0)
                 .padding(.vertical, 20.0)
-                List{
-                    ForEach(self.items) { item in
-                        NavigationLink(destination: BierkellerDetailView()) {
-                            Text("Bierkeller 1")
-                        }
-                    }
-                }
-                .onAppear(perform: {
-                    WebApiClient.loadData(additiveUrl: "beercellar", callback: { result in
-                        self.items = result
-                    })
-                })
+//                List{
+//                    ForEach(self.items) { item in
+//                        NavigationLink(destination: BierkellerDetailView()) {
+//                            Text("Bierkeller 1")
+//                        }
+//                    }
+//                }
+//                .onAppear(perform: {
+//                    WebApiClient.loadData(additiveUrl: "beercellar", callback: { result in
+//                        self.items = result
+//                    })
+//                })
                 
             }
             .navigationBarTitle("Meine Bierkeller")
@@ -43,10 +42,7 @@ struct BierkellerView: View {
 
         
     }
-    
-    func loadData(){
-        
-    }
+
 }
 
 
