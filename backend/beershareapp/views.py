@@ -1,5 +1,7 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F, Sum
 from django.db.models.functions import Radians, Power, Cos, Sin, ATan2, Sqrt
+from django.views.generic import TemplateView
 
 from . import models
 from . import serializers
@@ -11,6 +13,30 @@ from rest_framework.response import Response
 from rest_framework import permissions as rest_permissions
 from rest_framework import serializers as rest_serializers
 
+from .tables import BeerTable, BeerCellarTable, BeerOrderTable
+
+
+class BeerTableView(LoginRequiredMixin, TemplateView):
+    template_name = "beershareapp/table_view.html"
+
+    def get_context_data(self, **kwargs):
+        return {"menu_beer": True, "table": BeerTable(models.Beer.objects.all())}
+
+
+class BeerCellarTableView(LoginRequiredMixin, TemplateView):
+    template_name = "beershareapp/table_view.html"
+
+    def get_context_data(self, **kwargs):
+        return {"menu_beercellar": True, "table": BeerCellarTable(models.BeerCellar.objects.all())}
+
+
+class BeerOrderTableView(LoginRequiredMixin, TemplateView):
+    template_name = "beershareapp/table_view.html"
+
+    def get_context_data(self, **kwargs):
+        return {"menu_beerorder": True, "table": BeerOrderTable(models.BeerOrder.objects.all())}
+
+# API views
 
 @api_view(['GET'])
 @permission_classes([rest_permissions.IsAuthenticated])

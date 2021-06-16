@@ -3,6 +3,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # Frontend routes
+    path('', views.BeerTableView.as_view(), name='beershare-view-home'),
+    path('beer', views.BeerTableView.as_view(), name='beershare-view-beer'),
+    path('beercellar', views.BeerCellarTableView.as_view(), name='beershare-view-beercellar'),
+    path('beerorder', views.BeerOrderTableView.as_view(), name='beershare-view-beerorder'),
+
+    # API routes
     path('api/v1/auth/', views.auth, name='beershare-auth'),
 
     path('api/v1/beer/', views.BeerList.as_view(), name='beershare-beer'),
