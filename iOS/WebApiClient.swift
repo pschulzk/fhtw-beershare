@@ -11,7 +11,7 @@ enum HttpMethod: String {
     case POST = "POST"
 }
 
-class WebApiClient {
+public class WebApiClient {
     
     let BASE_URL = "http://0.0.0.0:8000/api/v1/"
 
