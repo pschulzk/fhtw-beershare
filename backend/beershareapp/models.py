@@ -23,6 +23,9 @@ class Address(models.Model):
         max_length=50
     )
 
+    def __str__(self):
+        return self.address
+
 
 class Beer(models.Model):
     brand = models.CharField(

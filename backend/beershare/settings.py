@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'users.apps.UsersConfig',
     'beershareapp.apps.BeershareappConfig',
 
     'django.contrib.admin',
@@ -45,6 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+
+    "bootstrap4",
+    'django_tables2',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +149,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'beershare-view-home'
+LOGIN_URL = 'login'
