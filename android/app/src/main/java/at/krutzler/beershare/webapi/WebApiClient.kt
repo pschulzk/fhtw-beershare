@@ -9,7 +9,8 @@ import at.krutzler.beershare.LoginActivity
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.*
+import java.util.Scanner
+import android.util.Base64
 
 class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
 
@@ -19,7 +20,7 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
 
     //private val mBaseUrl = "http://10.0.2.2:8000/api/v1"          // emulator
     //private val mBaseUrl = "http://10.0.0.17:8000/api/v1"         // bgld
-    private val mBaseUrl = "http://192.168.1.7:8000/api/v1"       // vienna
+    private val mBaseUrl = "http://10.0.2.2:8000/api/v1"       // vienna
     //private val mBaseUrl = "http://192.168.43.166:8000/api/v1"    // OnePlus hotspot
 
     fun get(path: String, callback: ((String, Boolean) -> Unit)? = null) {
@@ -82,7 +83,7 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                     // authorization
                     // TODO use token auth!
                     val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
-                    val encoded: String = Base64.getEncoder().encodeToString(message)
+                    val encoded: String = Base64.encodeToString(message, Base64.DEFAULT)
                     setRequestProperty("Authorization", "Basic $encoded")
                     requestMethod = mRequestMethod
 
@@ -125,7 +126,7 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                     // authorization
                     // TODO use token auth!
                     val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
-                    val encoded: String = Base64.getEncoder().encodeToString(message)
+                    val encoded: String = Base64.encodeToString(message, Base64.DEFAULT)
                     setRequestProperty("Authorization", "Basic $encoded")
                     setRequestProperty("Content-Type", "application/json; utf-8")
                     requestMethod = mRequestMethod
