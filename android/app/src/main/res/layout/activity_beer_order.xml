@@ -9,49 +9,48 @@
     android:padding="24dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:hint="@string/beerName"
         android:layout_marginBottom="12dp">
 
-        <!-- text is set for testing only -->
-        <TextView
-            android:text="Ottakringer"
-
-            android:id="@+id/tvOrderName"
+        <EditText
+            android:id="@+id/etOrderName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_weight="1"/>
+            android:inputType="none"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:autofillHints="" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:text="24"
-
-            android:id="@+id/tvOrderAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_weight="2"
-            android:gravity="center" />
-
-        <TextView
-            android:text="Akzeptiert"
-            android:visibility="gone"
-            android:id="@+id/tvOrderStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_weight="1"
-            android:gravity="center"/>
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/etOrderAmount"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etOrderAmountLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:inputType="number"/>
+        android:hint="@string/beerAmount"
+        android:layout_marginBottom="6dp">
+
+        <EditText
+            android:id="@+id/etOrderAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="number">
+            <requestFocus/>
+        </EditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:text="Maximum: 24"
+
+        android:id="@+id/tvMaxOrderAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:gravity="start"
+        android:layout_marginBottom="12dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

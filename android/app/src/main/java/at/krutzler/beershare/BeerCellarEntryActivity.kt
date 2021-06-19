@@ -13,6 +13,7 @@ import at.krutzler.beershare.repository.BeerCellarEntryRepository
 import at.krutzler.beershare.repository.BeerCellarRepository.BeerCellar
 import at.krutzler.beershare.repository.BeerCellarRepository.AbsoluteBeerCellarEntry
 import at.krutzler.beershare.repository.BeerRepository
+import at.krutzler.beershare.utils.ArrayAdapterNoFilter
 import at.krutzler.beershare.webapi.WebApiClient
 
 class BeerCellarEntryActivity : AppCompatActivity() {
@@ -25,7 +26,6 @@ class BeerCellarEntryActivity : AppCompatActivity() {
     }
 
     private lateinit var mClient: WebApiClient
-    private lateinit var mTvBeerCellarEntryBeerName: TextView
     private lateinit var mEtBeerCellarEntryAmount: EditText
 
     private var mBeerCellar: BeerCellar? = null
@@ -48,47 +48,40 @@ class BeerCellarEntryActivity : AppCompatActivity() {
         }
 
         // find views
-        mTvBeerCellarEntryBeerName = findViewById(R.id.tvBeerCellarEntryBeerName)
         mEtBeerCellarEntryAmount = findViewById(R.id.etBeerCellarEntryAmount)
 
-        val spBeer: Spinner = findViewById(R.id.spBeer)
+        val spBeer: AutoCompleteTextView = findViewById(R.id.spBeer)
         // initialize beer cellar
         mAbsoluteBeerCellarEntry?.also { absoluteBeerCellarEntry ->
             // entry exists
-            spBeer.visibility = View.GONE
-            mTvBeerCellarEntryBeerName.text = absoluteBeerCellarEntry.beerName
+            spBeer.setText(absoluteBeerCellarEntry.beerName)
+            spBeer.isFocusable = false
+            spBeer.isFocusableInTouchMode = false
+
             mEtBeerCellarEntryAmount.setText(absoluteBeerCellarEntry.amount.toString())
         } ?: run {
             // new entry
-            title = "Biere hinzufügen"
+            title = getString(R.string.addBeer)
 
-            mTvBeerCellarEntryBeerName.visibility = View.GONE
             mEtBeerCellarEntryAmount.setText(24.toString()) // reasonable defaults ;)
 
             BeerRepository(mClient).getAll { beers ->
                 // Create an ArrayAdapter using the Beer array and a default spinner layout
-                ArrayAdapter(
+                ArrayAdapterNoFilter(
                         this,
                         android.R.layout.simple_spinner_item,
                         beers
                 ).also { adapter ->
-                    // Specify the layout to use when the list of choices appears
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     // Apply the adapter to the spinner
-                    spBeer.adapter = adapter
+                    spBeer.setAdapter(adapter)
+
+                    mSelectedBeer = beers.getOrNull(0)
+                    spBeer.setText(mSelectedBeer?.toString())
                 }
             }
-            spBeer.onItemSelectedListener = object : OnItemSelectedListener {
-
-                override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                    mSelectedBeer = parent.getItemAtPosition(pos) as BeerRepository.Beer
-                    Log.d(TAG, "Beer selected: $mSelectedBeer")
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Callback method to be invoked when the selection disappears from this view.
-                    // The selection can disappear for instance when touch is activated or when the adapter becomes empty.
-                }
+            spBeer.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+                mSelectedBeer = parent.getItemAtPosition(position) as BeerRepository.Beer
+                Log.d(TAG, "Beer selected: $mSelectedBeer")
             }
         }
     }

@@ -10,11 +10,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import at.krutzler.beershare.repository.BeerCellarEntryRepository
 import at.krutzler.beershare.repository.BeerCellarRepository
 import at.krutzler.beershare.repository.BeerOrderRepository
 import at.krutzler.beershare.webapi.WebApiClient
-import kotlinx.android.synthetic.main.activity_beer_order.*
 
 class BeerOrderActivity : AppCompatActivity() {
 
@@ -29,10 +27,7 @@ class BeerOrderActivity : AppCompatActivity() {
 
     private lateinit var mClient: WebApiClient
 
-    private lateinit var mTvName: TextView
-    private lateinit var mTvAmount: TextView
-    private lateinit var mTvStatus: TextView
-
+    private lateinit var mTvMaxAmount: TextView
     private lateinit var mEtAmount: EditText
 
     private var mBeerOrder: BeerOrderRepository.BeerOrder? = null
@@ -55,10 +50,7 @@ class BeerOrderActivity : AppCompatActivity() {
             Log.d(TAG, "Not authenticated: TODO login")
         }
 
-        mTvName = findViewById(R.id.tvOrderName)
-        mTvAmount = findViewById(R.id.tvOrderAmount)
-        mTvStatus = findViewById(R.id.tvOrderStatus)
-
+        mTvMaxAmount = findViewById(R.id.tvMaxOrderAmount)
         mEtAmount = findViewById(R.id.etOrderAmount)
 
         val btnAcceptBeerOrder = findViewById<Button>(R.id.btnAcceptBeerOrder)
@@ -66,16 +58,19 @@ class BeerOrderActivity : AppCompatActivity() {
 
         // initialize beer order
         mBeerOrder?.also { beerOrder ->
-            // beerCellar exists
+            // beerOrder exists
             title = if (beerOrder.buyer == LoginActivity.username) {
                 "Eingehende Bestellung"
             } else {
                 "Ausgehende Bestellung"
             }
-            mTvName.text = beerOrder.beerName
-            mTvAmount.text = beerOrder.amount.toString()
-            mTvStatus.text = beerOrder.statusString()
-            mEtAmount.visibility = View.GONE
+            mTvMaxAmount.visibility = View.GONE
+            findViewById<EditText>(R.id.etOrderName).setText(beerOrder.beerName)
+
+            //findViewById<View>(R.id.etOrderAmountLayout).visibility = View.GONE
+            mEtAmount.setText(beerOrder.amount.toString())
+            mEtAmount.isFocusable = false
+            mEtAmount.isFocusableInTouchMode = false
 
             btnAcceptBeerOrder.setOnClickListener {
                 updateBeerOrderStatus(beerOrder, 2)
@@ -88,11 +83,11 @@ class BeerOrderActivity : AppCompatActivity() {
             // new beerOrder
             mBeerCellar?.also { beerCellar ->
                 beerCellar.entries?.get(beerCellarEntryPosition)?.let { beerCellarEntry ->
-                    mTvName.text = beerCellarEntry.beerName
-                    mTvAmount.text = beerCellarEntry.amount.toString()
-                    mTvStatus.text = ""
+                    mTvMaxAmount.text = "Maximum: ${beerCellarEntry.amount}"
 
-                    btnAcceptBeerOrder.text = "Bestellen"
+                    findViewById<EditText>(R.id.etOrderName).setText(beerCellarEntry.beerName)
+
+                    btnAcceptBeerOrder.text = getString(R.string.orderBeer)
                     btnDeclineBeerOrder.visibility = View.GONE
                     btnAcceptBeerOrder.setOnClickListener {
                         mEtAmount.text.toString().toIntOrNull()?.let { amount ->

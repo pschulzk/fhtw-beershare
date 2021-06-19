@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import at.krutzler.beershare.repository.BeerCellarRepository
 import org.osmdroid.config.Configuration
@@ -236,21 +237,26 @@ class OsmFragment : Fragment() {
         for (beerCellar in beerCellars) {
             Log.d(TAG, "add beer cellar marker: $beerCellar")
 
-            val beerIcon = requireContext().getDrawable(R.drawable.ic_beer)
-
+            val ownCellar = beerCellar.owner == LoginActivity.username
             Marker(mMapView).apply {
                 position = GeoPoint(beerCellar.latitude, beerCellar.longitude)
                 setAnchor(Marker.ANCHOR_BOTTOM, Marker.ANCHOR_CENTER)
                 title = beerCellar.name
                 snippet = beerCellar.owner
-                icon = beerIcon
+
+                icon = if (ownCellar) {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_marker_beer_own)
+                } else {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_marker_beer)
+                }
+
                 setOnMarkerClickListener { marker, _ -> Boolean
                     Log.d(TAG, marker.toString())
                     // marker.showInfoWindow()
 
                     val intent = Intent(requireContext(), BeerCellarActivity::class.java)
                     intent.putExtra(BeerCellarActivity.BEER_CELLAR_PARCELABLE_EXTRA, beerCellar)
-                    intent.putExtra(BeerCellarActivity.ORDER_MODE_EXTRA, true)
+                    intent.putExtra(BeerCellarActivity.ORDER_MODE_EXTRA, !ownCellar)
 
                     startActivity(intent)
 

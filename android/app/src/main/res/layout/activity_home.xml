@@ -9,24 +9,86 @@
     android:padding="24dp"
     android:orientation="vertical">
 
-    <Button
+    <LinearLayout
         android:id="@+id/btnExplore"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="33"
-        android:text="Ich suche Bier"/>
+        android:orientation="vertical"
+        android:background="@drawable/button_shape"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp">
 
-    <Button
+        <ImageView
+            android:layout_marginVertical="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="33"
+            android:src="@drawable/ic_home_magnifier"
+            app:tint="@color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/iSearchBeer"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/btnOrders"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="33"
-        android:text="Meine Bestellungen"/>
+        android:orientation="vertical"
+        android:background="@drawable/button_shape"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp">
 
-    <Button
+        <ImageView
+            android:layout_marginVertical="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="33"
+            android:src="@drawable/ic_home_sent"
+            app:tint="@color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/myOrders"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/btnBeerCellars"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="33"
-        android:text="Meine Bierkeller"/>
+        android:orientation="vertical"
+        android:background="@drawable/button_shape"
+        android:padding="12dp">
+
+        <ImageView
+            android:layout_marginVertical="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="33"
+            android:src="@drawable/ic_home_beer"
+            app:tint="@color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/myCellars"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
 </LinearLayout>

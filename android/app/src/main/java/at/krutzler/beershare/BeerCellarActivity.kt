@@ -38,7 +38,7 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
     private lateinit var mClient: WebApiClient
 
     private lateinit var mEtBeerCellarName: EditText
-    private lateinit var mEtBeerCellarAddress: AutoCompleteTextView
+    private lateinit var mEtBeerCellarAddress: EditText
 
     private lateinit var mTvNoBeer: TextView
     private lateinit var mBeerCellarEntryListAdapter: BeerCellarEntryListAdapter
@@ -86,9 +86,10 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
         mTvNoBeer = findViewById(R.id.tvNoBeer)
         mAutoAdapter = ArrayAdapterNoFilter(
             this@BeerCellarActivity,
-            android.R.layout.simple_dropdown_item_1line
+            android.R.layout.simple_dropdown_item_1line,
+            mutableListOf()
         )
-        mEtBeerCellarAddress.setAdapter(mAutoAdapter)
+        //mEtBeerCellarAddress.setAdapter(mAutoAdapter)
 
         // button
         val btnAddBeer = findViewById<Button>(R.id.btnAddBeer)
@@ -151,7 +152,9 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        Log.d(TAG, "options")
+        if (mOrderMode) {
+            return true
+        }
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu_edit, menu)
         menu.findItem(R.id.action_delete).isVisible = mBeerCellar != null
