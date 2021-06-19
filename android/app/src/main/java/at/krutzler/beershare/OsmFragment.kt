@@ -228,7 +228,6 @@ class OsmFragment : Fragment() {
         mMapView.onResume()
     }
 
-    //@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setBeerCellars(beerCellars: List<BeerCellarRepository.BeerCellar>) {
 
         // remove all Marker
@@ -237,8 +236,7 @@ class OsmFragment : Fragment() {
         for (beerCellar in beerCellars) {
             Log.d(TAG, "add beer cellar marker: $beerCellar")
 
-            val beerIcon = requireContext().resources.getDrawable(R.drawable.ic_beer)
-            //beerIcon.setTint(requireContext().resources.getColor(R.color.beer_yellow))
+            val beerIcon = requireContext().getDrawable(R.drawable.ic_beer)
 
             Marker(mMapView).apply {
                 position = GeoPoint(beerCellar.latitude, beerCellar.longitude)

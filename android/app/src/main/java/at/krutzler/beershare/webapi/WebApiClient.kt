@@ -1,10 +1,9 @@
 package at.krutzler.beershare.webapi
 
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.util.Log
-import androidx.annotation.RequiresApi
 import at.krutzler.beershare.LoginActivity
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -74,7 +73,6 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                                           callback: ((String, Boolean) -> Unit)?)
         : AWebApiRunnable(url, requestMethod, callback) {
 
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
             try {
                 with(mUrl.openConnection() as HttpURLConnection) {
@@ -82,7 +80,7 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                     // authorization
                     // TODO use token auth!
                     val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
-                    val encoded: String = Base64.getEncoder().encodeToString(message)
+                    val encoded: String = Base64.encodeToString(message, Base64.DEFAULT)
                     setRequestProperty("Authorization", "Basic $encoded")
                     requestMethod = mRequestMethod
 
@@ -117,7 +115,6 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                                            callback: ((String, Boolean) -> Unit)?)
         : AWebApiRunnable(url, requestMethod, callback) {
 
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
             try {
                 with(mUrl.openConnection() as HttpURLConnection) {
@@ -125,7 +122,7 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                     // authorization
                     // TODO use token auth!
                     val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
-                    val encoded: String = Base64.getEncoder().encodeToString(message)
+                    val encoded: String = Base64.encodeToString(message, Base64.DEFAULT)
                     setRequestProperty("Authorization", "Basic $encoded")
                     setRequestProperty("Content-Type", "application/json; utf-8")
                     requestMethod = mRequestMethod
