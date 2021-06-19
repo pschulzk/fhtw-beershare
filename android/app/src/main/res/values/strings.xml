@@ -22,4 +22,6 @@
     <string name="myOrders">Meine Bestellungen</string>
     <string name="myCellars">Meine Bierkeller</string>
     <string name="backendHostname">Backend hostname</string>
+    <string name="authenticationFailed">Authentication failed</string>
+    <string name="backendNotReachable">Backend not reachable</string>
 </resources>

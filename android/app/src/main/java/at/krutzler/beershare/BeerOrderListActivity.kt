@@ -28,7 +28,8 @@ class BeerOrderListActivity : AppCompatActivity() {
         title = "Meine Bestellungen"
 
         mClient = WebApiClient {
-            Log.d(TAG, "Not authenticated: TODO login")
+            Log.d(TAG, "Not authenticated: goto login activity")
+            LoginActivity.showLoginAndCloseActivities(this)
         }
 
         // recycler views
@@ -71,10 +72,10 @@ class BeerOrderListActivity : AppCompatActivity() {
 
             // remove all orders which are done
             mIncomingBeerOrdersAdapter.swapData(beerOrders.filter {
-                it.status != 4 && it.buyer == LoginActivity.username
+                it.status != 4 && it.buyer == WebApiClient.username
             })
             mOutgoingBeerOrdersAdapter.swapData(beerOrders.filter {
-                it.status != 4 && it.buyer != LoginActivity.username
+                it.status != 4 && it.buyer != WebApiClient.username
             })
         }
     }

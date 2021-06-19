@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -13,6 +12,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import at.krutzler.beershare.webapi.WebApiClient
 
 class LoginActivity : AppCompatActivity() {
@@ -25,9 +25,18 @@ class LoginActivity : AppCompatActivity() {
 
         const val SETTINGS_REQUEST_CODE = 1
 
-        var username = ""
-        var password = ""
+
+        fun showLoginAndCloseActivities(context: Context) {
+            val i = Intent(context, LoginActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            context.startActivity(i)
+
+            Toast.makeText(context, context.getString(R.string.authenticationFailed), Toast.LENGTH_LONG).show()
+        }
     }
+
+    private var username = ""
+    private var password = ""
 
     private lateinit var mPrefs: SharedPreferences
     private lateinit var mEtUsername: EditText
@@ -59,14 +68,17 @@ class LoginActivity : AppCompatActivity() {
             // log into the backend using username and password
             WebApiClient {
                 Log.d(TAG, "Authentication failed")
-                Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, getString(R.string.authenticationFailed), Toast.LENGTH_LONG).show()
                 mBtnLogin.isEnabled = true
             }.also { client ->
+                WebApiClient.username = username
+                WebApiClient.password = password
+
                 client.get("auth") { _, error ->
                     if (error) {
                         // login failed due to a connection error (no auth error)
                         Log.d(TAG, "Backend not reachable")
-                        Toast.makeText(applicationContext, "Backend not reachable", Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, getString(R.string.backendNotReachable), Toast.LENGTH_LONG).show()
                         mBtnLogin.isEnabled = true
                     } else {
                         // login successful

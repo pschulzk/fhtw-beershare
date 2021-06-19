@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import at.krutzler.beershare.repository.BeerCellarRepository
+import at.krutzler.beershare.webapi.WebApiClient
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -237,7 +238,7 @@ class OsmFragment : Fragment() {
         for (beerCellar in beerCellars) {
             Log.d(TAG, "add beer cellar marker: $beerCellar")
 
-            val ownCellar = beerCellar.owner == LoginActivity.username
+            val ownCellar = beerCellar.owner == WebApiClient.username
             Marker(mMapView).apply {
                 position = GeoPoint(beerCellar.latitude, beerCellar.longitude)
                 setAnchor(Marker.ANCHOR_BOTTOM, Marker.ANCHOR_CENTER)

@@ -28,7 +28,8 @@ class BeerCellarListActivity : AppCompatActivity() {
         title = getString(R.string.beerCellarListTitle)
 
         mClient = WebApiClient {
-            Log.d(TAG, "Not authenticated: TODO login")
+            Log.d(TAG, "Not authenticated: goto login activity")
+            LoginActivity.showLoginAndCloseActivities(this)
         }
 
         findViewById<Button>(R.id.btnAddBeerCellar).setOnClickListener {

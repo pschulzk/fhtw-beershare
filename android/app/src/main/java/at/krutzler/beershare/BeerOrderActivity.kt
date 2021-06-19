@@ -47,7 +47,8 @@ class BeerOrderActivity : AppCompatActivity() {
         mOrderMode = intent.getBooleanExtra(BeerCellarActivity.ORDER_MODE_EXTRA, false)
 
         mClient = WebApiClient {
-            Log.d(TAG, "Not authenticated: TODO login")
+            Log.d(TAG, "Not authenticated: goto login activity")
+            LoginActivity.showLoginAndCloseActivities(this)
         }
 
         mTvMaxAmount = findViewById(R.id.tvMaxOrderAmount)
@@ -59,7 +60,7 @@ class BeerOrderActivity : AppCompatActivity() {
         // initialize beer order
         mBeerOrder?.also { beerOrder ->
             // beerOrder exists
-            title = if (beerOrder.buyer == LoginActivity.username) {
+            title = if (beerOrder.buyer == WebApiClient.username) {
                 "Eingehende Bestellung"
             } else {
                 "Ausgehende Bestellung"

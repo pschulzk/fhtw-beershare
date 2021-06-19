@@ -21,7 +21,8 @@ class BeerCellarExplorerActivity : AppCompatActivity(), OsmFragment.Interface {
         title = "Bierkeller in der Nähe"
 
         mClient = WebApiClient {
-            Log.d(TAG, "Not authenticated: TODO login")
+            Log.d(TAG, "Not authenticated: goto login activity")
+            LoginActivity.showLoginAndCloseActivities(this)
         }
 
         // Add OSM map

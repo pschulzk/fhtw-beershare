@@ -44,7 +44,8 @@ class BeerCellarEntryActivity : AppCompatActivity() {
         mAbsoluteBeerCellarEntry = mBeerCellar?.entries?.getOrNull(beerCellarEntryPosition)
 
         mClient = WebApiClient {
-            Log.d(TAG, "Not authenticated: TODO login")
+            Log.d(TAG, "Not authenticated: goto login activity")
+            LoginActivity.showLoginAndCloseActivities(this)
         }
 
         // find views

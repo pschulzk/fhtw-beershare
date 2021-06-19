@@ -4,7 +4,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Base64
 import android.util.Log
-import at.krutzler.beershare.LoginActivity
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -15,6 +14,9 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
     companion object {
         private const val TAG = "WebApi"
         var backendHostname = "0.0.0.0:8000"
+
+        var username = ""
+        var password = ""
     }
 
     fun get(path: String, callback: ((String, Boolean) -> Unit)? = null) {
@@ -50,9 +52,6 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                                                  private val mCallback: ((String, Boolean) -> Unit)?)
         : Runnable {
 
-        protected val mUsername = LoginActivity.username   // TODO
-        protected val mPassword = LoginActivity.password   // TODO
-
         protected fun postResponse(response: String, error: Boolean) {
             Handler(Looper.getMainLooper()).post {
                 // post to UI thread
@@ -77,9 +76,8 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
             try {
                 with(mUrl.openConnection() as HttpURLConnection) {
 
-                    // authorization
-                    // TODO use token auth!
-                    val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
+                    // authorization via HTTP Basic auth
+                    val message = "$username:$password".toByteArray(charset("UTF-8"))
                     val encoded: String = Base64.encodeToString(message, Base64.DEFAULT)
                     setRequestProperty("Authorization", "Basic $encoded")
                     requestMethod = mRequestMethod
@@ -120,9 +118,8 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
             try {
                 with(mUrl.openConnection() as HttpURLConnection) {
 
-                    // authorization
-                    // TODO use token auth!
-                    val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
+                    // authorization via HTTP Basic auth
+                    val message = "$username:$password".toByteArray(charset("UTF-8"))
                     val encoded: String = Base64.encodeToString(message, Base64.DEFAULT)
                     setRequestProperty("Authorization", "Basic $encoded")
                     setRequestProperty("Content-Type", "application/json; utf-8")

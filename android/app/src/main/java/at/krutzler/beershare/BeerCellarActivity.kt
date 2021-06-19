@@ -63,7 +63,8 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
         }
 
         mClient = WebApiClient {
-            Log.d(TAG, "Not authenticated: TODO login")
+            Log.d(TAG, "Not authenticated: goto login activity")
+            LoginActivity.showLoginAndCloseActivities(this)
         }
 
         // find views
