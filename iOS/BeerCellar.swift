@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct BeerCellar: Codable, Hashable {
+struct BeerCellar:  Identifiable, Codable {
     static func == (lhs: BeerCellar, rhs: BeerCellar) -> Bool {
         return lhs.name != rhs.name
     }
     
+    var id : Int
     let name: String
     let latitude, longitude: Double
     let address: Address

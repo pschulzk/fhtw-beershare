@@ -26,7 +26,7 @@ struct BierkellerView: View {
                 .padding(.vertical, 20.0)
                 
                 List {
-                    ForEach(items, id: \.self) { item in
+                    ForEach(items, id: \.id) { item in
                         VStack(alignment: .leading) {
                             NavigationLink(destination: BierkellerDetailView()) {
                                 Text(item.name)

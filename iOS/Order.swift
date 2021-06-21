@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Order : Codable {
+struct Order: Identifiable, Codable {
+    var id = UUID()
     var status : String
     var package : Package
 }

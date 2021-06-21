@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Beer: Codable, Identifiable{
+struct Beer: Identifiable, Codable {
     var id : Int
     var brand: String
     var type: String

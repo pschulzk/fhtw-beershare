@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Package : Codable {
+struct Package: Identifiable, Codable {
+    var id = UUID()
     var sorte : String
     var anzahl : Int
 }
