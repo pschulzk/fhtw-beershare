@@ -21,4 +21,5 @@
     <string name="iSearchBeer">Ich suche Bier</string>
     <string name="myOrders">Meine Bestellungen</string>
     <string name="myCellars">Meine Bierkeller</string>
+    <string name="backendHostname">Backend hostname</string>
 </resources>

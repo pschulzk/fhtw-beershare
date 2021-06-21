@@ -29,7 +29,7 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
 
     companion object {
         private const val TAG = "BeerCellarActivity"
-        const val EDIT_ENTRY_REQUEST_CODE = 1
+        private const val EDIT_ENTRY_REQUEST_CODE = 1
 
         const val BEER_CELLAR_PARCELABLE_EXTRA = "beerCellar"
         const val ORDER_MODE_EXTRA = "orderMode"
