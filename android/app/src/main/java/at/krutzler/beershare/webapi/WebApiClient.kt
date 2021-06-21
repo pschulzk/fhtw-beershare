@@ -1,10 +1,9 @@
 package at.krutzler.beershare.webapi
 
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.util.Log
-import androidx.annotation.RequiresApi
 import at.krutzler.beershare.LoginActivity
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -75,7 +74,6 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                                           callback: ((String, Boolean) -> Unit)?)
         : AWebApiRunnable(url, requestMethod, callback) {
 
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
             try {
                 with(mUrl.openConnection() as HttpURLConnection) {
@@ -118,7 +116,6 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                                            callback: ((String, Boolean) -> Unit)?)
         : AWebApiRunnable(url, requestMethod, callback) {
 
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun run() {
             try {
                 with(mUrl.openConnection() as HttpURLConnection) {
