@@ -5,7 +5,6 @@
 //  Created by Chris on 12.06.21.
 //
 import Foundation
-import Bagel
 
 enum HttpMethod: String {
     case GET = "GET"
@@ -17,11 +16,6 @@ public class WebApiClient {
     
     let BASE_URL = "http://0.0.0.0:8000/api/v1/"
     let credentials = URLCredential(user: "admin", password: "admin", persistence: .forSession)
-    
-    init() {
-        // debug
-        // Bagel.start()
-    }
 
     func getData<T : Decodable>(additiveUrl: String, callback: @escaping (_ response: T) -> Void) {
 
