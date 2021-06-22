@@ -28,10 +28,17 @@ struct TestMapView: View {
           )
         ) {
           VStack {
-            Text(location.name)
-              .font(.caption2)
-              .bold()
+            NavigationLink(
+                destination: BierkellerDetailView(),
+                label: {
+                    Text(location.name)
+                      .font(.caption2)
+                      .bold()
+                })
+            
             Image(systemName: "mappin")
+                .foregroundColor(.red)
+                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
           }
         }
       }
