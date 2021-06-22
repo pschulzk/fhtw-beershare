@@ -28,14 +28,14 @@ struct BierkellerView: View {
                 List {
                     ForEach(items, id: \.id) { item in
                         VStack(alignment: .leading) {
-                            NavigationLink(destination: BierkellerDetailView()) {
+                            NavigationLink(destination: BierkellerDetailView(item: item)) {
                                 Text(item.name)
                             }
                         }
                     }
                 }
                 .onAppear(perform: {
-                    client.getData(additiveUrl: "beercellar", callback: { result in
+                    client.getData(additiveUrl: "beercellar", ofType: [BeerCellar].self, callback: { result in
                         self.items = result
                     })
                 })

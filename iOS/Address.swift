@@ -17,4 +17,11 @@ struct Address: Identifiable, Codable {
         case zipCode = "zip_code"
         case city, country
     }
+    
+    init(address: String, zipCode: String, city: String, country: String) {
+        self.address = address
+        self.zipCode = zipCode
+        self.city = city
+        self.country = country
+    }
 }

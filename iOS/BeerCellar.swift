@@ -7,9 +7,17 @@
 
 import Foundation
 
-struct BeerCellar:  Identifiable, Codable {
+class BeerCellar: Identifiable, Codable, ObservableObject {
     static func == (lhs: BeerCellar, rhs: BeerCellar) -> Bool {
         return lhs.name != rhs.name
+    }
+    
+    init(id: Int, name: String) {
+        self.id = id
+        self.name = name
+        self.latitude = 999.0
+        self.longitude = 999.0
+        self.address = Address(address: name, zipCode: name, city: name, country: name)
     }
     
     var id: Int

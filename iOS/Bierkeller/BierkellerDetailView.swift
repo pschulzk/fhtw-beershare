@@ -8,22 +8,27 @@
 import SwiftUI
 
 struct BierkellerDetailView: View {
+    @ObservedObject var item: BeerCellar
     @State var name = ""
     @State var address = ""
+    private var client = WebApiClient()
+    
+    init(item: BeerCellar) {
+        self.item = item
+    }
+
     var body: some View {
-        VStack{
-            VStack(alignment: .leading){
+        VStack {
+            VStack(alignment: .leading) {
                 Text("Name")
-                    .padding(.top, 30.0)
-                    .frame(height: 30.0)
+                    .font(.caption)
                 TextField("Name", text: $name)
-                    .frame(height: 40.0)
+                    .padding(8.0)
                     .border(Color.gray)
                 Text("Adresse")
-                    .padding(.top, 30.0)
-                    .frame(height: 30.0)
+                    .font(.caption)
                 TextField("Adresse", text: $address)
-                    .frame(height: 40.0)
+                    .padding(8.0)
                     .border(Color.gray)
                 
                 NavigationLink(destination: ManagementDetailView()) {
@@ -32,9 +37,9 @@ struct BierkellerDetailView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 200.0, height: 40.0)
                         .cornerRadius(10)
-                        
                 }
                 .padding(.top, 30.0)
+
                 HStack{
                     Text("Biersorten")
                     Spacer()
@@ -61,14 +66,32 @@ struct BierkellerDetailView: View {
             
         }
         .navigationBarTitle("Bierkeller Details")
+        .navigationBarItems(trailing: Button(action: {
+            print("Button pushed!")
+        }) {
+            Image(systemName: "multiply.circle.fill")
+                .foregroundColor(.gray)
+                .padding(.trailing, 8)
+        })
         .navigationBarTitleDisplayMode(.inline)
         .padding()
+        .onAppear(perform: {
+            self.name = self.item.name
+            self.address = "placeholder for address function"
+            /*
+            client.getData(additiveUrl: "beercellar/\(self.id)", ofType: BeerCellar.self, callback: { result in
+                self.item = result
+                self.name = self.item.name
+                self.address = "placeholder for address function"
+            })
+            */
+        })
     }
 
 }
 
 struct BierkellerDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        BierkellerDetailView()
+        BierkellerDetailView(item: BeerCellar(id: 42, name: "test"))
     }
 }
