@@ -41,7 +41,7 @@ public class WebApiClient {
             })
         }
         catch let error as NSError {
-            print("Caught NSError: \(error.localizedDescription), \(error.domain), \(error.code)")
+            print("Caught GET request error to \(urlString): \(error.localizedDescription), \(error.domain), \(error.code)")
         }
     }
     
@@ -68,7 +68,7 @@ public class WebApiClient {
             }, payload: payload)
         }
         catch let error as NSError {
-            print("Caught NSError: \(error.localizedDescription), \(error.domain), \(error.code)")
+            print("Caught POST request error to \(urlString): \(error.localizedDescription), \(error.domain), \(error.code)")
         }
     }
     
