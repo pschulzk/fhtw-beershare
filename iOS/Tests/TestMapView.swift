@@ -9,12 +9,11 @@ import SwiftUI
 import MapKit
 
 struct TestMapView: View {
-    private var client = WebApiClient()
+    var client = WebApiClient()
     @State private var locations: [BeerCellar] = []
-
     @State private var coordinateRegion = MKCoordinateRegion(
-      center: CLLocationCoordinate2D(latitude: 19.43, longitude: -99.13),
-      span: MKCoordinateSpan(latitudeDelta: 50, longitudeDelta: 50)
+        center: CLLocationCoordinate2D(latitude: 48.20849, longitude: 16.37298),
+        span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
     )
 
     var body: some View {
@@ -36,16 +35,19 @@ struct TestMapView: View {
           }
         }
       }
-      .onAppear(perform: client.getData(additiveUrl: "beercellar", callback: {
-        result in self.locations
-        self.locations = result
-      }))
+      .onAppear(perform: {client.getData(additiveUrl: "beercellar", callback: {
+            result in
+            self.locations = result
+            })
+      for element in self.locations{
+        print("\(element.address)\n")
+      }
+        })
     }
 }
 
 struct TestMapView_Previews: PreviewProvider {
     static var previews: some View {
-
         TestMapView()
     }
 }
