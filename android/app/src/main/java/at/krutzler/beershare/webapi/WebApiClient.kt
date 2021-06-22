@@ -4,42 +4,43 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Base64
 import android.util.Log
-import at.krutzler.beershare.LoginActivity
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Scanner
-import android.util.Base64
 
 class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
 
     companion object {
         private const val TAG = "WebApi"
+        var backendHostname = "0.0.0.0:8000"
+
+        var username = ""
+        var password = ""
     }
 
-    //private val mBaseUrl = "http://10.0.2.2:8000/api/v1"          // emulator
-    //private val mBaseUrl = "http://10.0.0.17:8000/api/v1"         // bgld
-    private val mBaseUrl = "http://10.0.2.2:8000/api/v1"       // vienna
-    //private val mBaseUrl = "http://192.168.43.166:8000/api/v1"    // OnePlus hotspot
-
     fun get(path: String, callback: ((String, Boolean) -> Unit)? = null) {
-        val url = URL("$mBaseUrl/$path")
+        val url = URL("${baseUrl()}/$path")
         startRunnable(WebApiGetRunnable(url, "GET", callback))
     }
 
     fun post(path: String, data: String, callback: ((String, Boolean) -> Unit)? = null) {
-        val url = URL("$mBaseUrl/$path")
+        val url = URL("${baseUrl()}/$path")
         startRunnable(WebApiPostRunnable(url, "POST", data, callback))
     }
 
     fun put(path: String, data: String, callback: ((String, Boolean) -> Unit)? = null) {
-        val url = URL("$mBaseUrl/$path")
+        val url = URL("${baseUrl()}/$path")
         startRunnable(WebApiPostRunnable(url, "PUT", data, callback))
     }
 
     fun delete(path: String, callback: ((String, Boolean) -> Unit)? = null) {
-        val url = URL("$mBaseUrl/$path")
+        val url = URL("${baseUrl()}/$path")
         startRunnable(WebApiGetRunnable(url, "DELETE", callback))
+    }
+
+    private fun baseUrl(): String {
+        return "http://$backendHostname/api/v1"
     }
 
     private fun startRunnable(runnable: Runnable) {
@@ -50,9 +51,6 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
                                                  protected val mRequestMethod: String,
                                                  private val mCallback: ((String, Boolean) -> Unit)?)
         : Runnable {
-
-        protected val mUsername = LoginActivity.username   // TODO
-        protected val mPassword = LoginActivity.password   // TODO
 
         protected fun postResponse(response: String, error: Boolean) {
             Handler(Looper.getMainLooper()).post {
@@ -78,12 +76,12 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
             try {
                 with(mUrl.openConnection() as HttpURLConnection) {
 
-                    // authorization
-                    // TODO use token auth!
-                    val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
+                    // authorization via HTTP Basic auth
+                    val message = "$username:$password".toByteArray(charset("UTF-8"))
                     val encoded: String = Base64.encodeToString(message, Base64.DEFAULT)
                     setRequestProperty("Authorization", "Basic $encoded")
                     requestMethod = mRequestMethod
+                    connectTimeout = 5 * 1000  // 5s timeout
 
                     Log.d(TAG, "GET response code: $responseCode")
                     if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
@@ -120,9 +118,8 @@ class WebApiClient(private val mNotAuthenticatedHandler: (() -> Unit)? = null) {
             try {
                 with(mUrl.openConnection() as HttpURLConnection) {
 
-                    // authorization
-                    // TODO use token auth!
-                    val message = "$mUsername:$mPassword".toByteArray(charset("UTF-8"))
+                    // authorization via HTTP Basic auth
+                    val message = "$username:$password".toByteArray(charset("UTF-8"))
                     val encoded: String = Base64.encodeToString(message, Base64.DEFAULT)
                     setRequestProperty("Authorization", "Basic $encoded")
                     setRequestProperty("Content-Type", "application/json; utf-8")

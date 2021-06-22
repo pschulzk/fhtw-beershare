@@ -39,7 +39,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:paddingBottom="4dp"
-                android:layout_weight="1"/>
+                android:layout_weight="2"/>
 
             <TextView
                 android:text="Menge"
@@ -49,7 +49,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
-                android:layout_weight="1" />
+                android:layout_weight="3" />
 
             <TextView
                 android:text="Status"
@@ -59,13 +59,13 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
-                android:layout_weight="1" />
+                android:layout_weight="3" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="2dp"
             android:background="@color/line"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -74,8 +74,6 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
-
-
 
     <LinearLayout
         android:id="@+id/llOutgoingHeader"
@@ -108,7 +106,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:paddingBottom="4dp"
-                android:layout_weight="1"/>
+                android:layout_weight="2"/>
 
             <TextView
                 android:text="Menge"
@@ -118,7 +116,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
-                android:layout_weight="1" />
+                android:layout_weight="3" />
 
             <TextView
                 android:text="Status"
@@ -128,13 +126,13 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
-                android:layout_weight="1" />
+                android:layout_weight="3" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="2dp"
             android:background="@color/line"/>
 
         <androidx.recyclerview.widget.RecyclerView

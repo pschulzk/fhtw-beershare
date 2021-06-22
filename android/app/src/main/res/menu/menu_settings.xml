@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- "Settings", should appear as action button if possible -->
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:iconTint="@color/white"
+        android:title="Settings"
+        app:showAsAction="ifRoom" />
+</menu>

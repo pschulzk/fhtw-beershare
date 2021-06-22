@@ -4,8 +4,8 @@ import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Filter
 
-class ArrayAdapterNoFilter(context: Context, textViewResourceId: Int) :
-        ArrayAdapter<String?>(context, textViewResourceId) {
+class ArrayAdapterNoFilter(context: Context, textViewResourceId: Int, objects: List<Any>) :
+        ArrayAdapter<Any?>(context, textViewResourceId, objects) {
     /**
      * Override ArrayAdapter.getFilter() to return our own filtering.
      */

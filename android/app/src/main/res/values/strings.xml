@@ -10,4 +10,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="acceptBeerOrder">Okay</string>
     <string name="declineBeerOrder">Ablehnen</string>
+    <string name="beerCellarName">Name</string>
+    <string name="addBeer">Biere hinzufügen</string>
+    <string name="beerName">Biersorten</string>
+    <string name="beerAmount">Menge</string>
+    <string name="noBeerAvailable">Noch kein Bier eingelagert</string>
+    <string name="address">Adresse</string>
+    <string name="addBeerCellar">Bierkeller hinzufügen</string>
+    <string name="orderBeer">Bestellen</string>
+    <string name="iSearchBeer">Ich suche Bier</string>
+    <string name="myOrders">Meine Bestellungen</string>
+    <string name="myCellars">Meine Bierkeller</string>
+    <string name="backendHostname">Backend hostname</string>
+    <string name="authenticationFailed">Authentication failed</string>
+    <string name="backendNotReachable">Backend not reachable</string>
 </resources>

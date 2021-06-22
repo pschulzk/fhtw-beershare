@@ -9,25 +9,37 @@
     android:padding="24dp"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etBeerCellarName"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"/>
+        android:hint="@string/beerCellarName"
+        android:layout_marginBottom="12dp">
 
-    <AutoCompleteTextView
-        android:enabled="false"
-        android:id="@+id/etBeerCellarAddress"
+        <EditText
+            android:id="@+id/etBeerCellarName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Address"
-        android:autofillHints="postalAddress"/>
+        android:hint="@string/address"
+        android:layout_marginBottom="12dp">
+
+        <EditText
+            android:id="@+id/etBeerCellarAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="postalAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnAddBeer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Biere hinzufügen"
+        android:text="@string/addBeer"
         android:layout_marginBottom="12dp"/>
 
     <LinearLayout
@@ -43,7 +55,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:text="Biersorten"
+                android:text="@string/beerName"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +65,7 @@
                 android:layout_weight="1"/>
 
             <TextView
-                android:text="Menge"
+                android:text="@string/beerAmount"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,14 +88,16 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Noch kein Bier eingelagert"
+        android:text="@string/noBeerAvailable"
         android:textAlignment="center"
         android:gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAggregatedBeerCellarEntries"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+        <requestFocus/>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <FrameLayout
         android:id="@+id/flOsmFragment"

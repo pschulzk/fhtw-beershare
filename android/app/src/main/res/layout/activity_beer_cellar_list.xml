@@ -12,7 +12,7 @@
         android:id="@+id/btnAddBeerCellar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bierkeller hinzufügen"
+        android:text="@string/addBeerCellar"
         android:drawableLeft="@drawable/ic_baseline_add_24"
         android:drawableTint="@color/white"
         android:layout_marginBottom="8dp"/>

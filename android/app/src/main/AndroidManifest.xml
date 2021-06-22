@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BeerShare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".BeerOrderActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".BeerOrderActivity" />
         <activity android:name=".BeerOrderListActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".BeerCellarEntryActivity" />
