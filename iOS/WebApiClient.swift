@@ -6,6 +6,14 @@
 //
 import Foundation
 
+extension Encodable {
+    var dict : [String: Any]? {
+        guard let data = try? JSONEncoder().encode(self) else { return nil }
+        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else { return nil }
+        return json
+    }
+}
+
 enum HttpMethod: String {
     case GET = "GET"
     case POST = "POST"
@@ -124,6 +132,9 @@ public class WebApiClient {
         }
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.allHTTPHeaderFields = [
+            "Accept": "application/json"
+        ]
         
         let task = makeSession().dataTask(with: request, completionHandler: completionHandler)
         task.resume()
@@ -138,19 +149,23 @@ public class WebApiClient {
         }
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.allHTTPHeaderFields = [
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        ]
         
         if payload != nil {
-            guard let jsonObj = try? JSONEncoder().encode(payload) else {
+            guard let jsonObj: Dictionary<String, Any> = payload?.dict else {
                 throw NSError(domain: "Data format error", code: 903, userInfo: ["Malformed Data in object of class": String(describing: T.self)] )
             }
-            let test = JSONSerialization.isValidJSONObject(jsonObj)
-            print(test ? "TRUE" : "FALSE")
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObj, options: []) else {
+            if (!JSONSerialization.isValidJSONObject(jsonObj)) {
+                print("Payload is not a valid json object!")
+            }
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObj, options: .prettyPrinted) else {
                 throw NSError(domain: "JSON format error", code: 904, userInfo: ["Malformed JSON in object of class": String(describing: T.self)] )
             }
             print(jsonData)
-            request.httpBody = jsonData
-            let task = makeSession().dataTask(with: request, completionHandler: completionHandler)
+            let task = makeSession().uploadTask(with: request, from: jsonData, completionHandler: completionHandler)
             task.resume()
         } else {
             let task = makeSession().dataTask(with: request, completionHandler: completionHandler)

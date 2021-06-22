@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BierkellerDetailView: View {
-    @ObservedObject var item: BeerCellar
+    @State var item: BeerCellar
     @State var name = ""
     @State var address = ""
     private var client = WebApiClient()
@@ -68,8 +68,9 @@ struct BierkellerDetailView: View {
         .navigationBarTitle("Bierkeller Details")
         .navigationBarItems(trailing: Button(action: {
             print("Button pushed!")
+            self.item.name = self.name
             client.putData(additiveUrl: "beercellar/\(self.item.id)", ofType: BeerCellar.self, callback: { result in
-                result.name = self.item.name
+                self.item = result
             }, payload: self.item)
         }) {
             Image(systemName: "checkmark")
@@ -86,8 +87,10 @@ struct BierkellerDetailView: View {
 
 }
 
+/*
 struct BierkellerDetailView_Previews: PreviewProvider {
     static var previews: some View {
         BierkellerDetailView(item: BeerCellar(id: 42, name: "test"))
     }
 }
+*/

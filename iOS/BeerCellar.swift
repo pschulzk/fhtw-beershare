@@ -14,6 +14,7 @@ class BeerCellar: Identifiable, Codable, ObservableObject {
     var latitude, longitude: Double
     var address: Address
     
+    /*
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -21,6 +22,7 @@ class BeerCellar: Identifiable, Codable, ObservableObject {
         case longitude
         case address
     }
+    */
 
     /*
     required init(from decoder: Decoder) throws {
@@ -35,6 +37,7 @@ class BeerCellar: Identifiable, Codable, ObservableObject {
     }
     */
     
+    /*
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
@@ -45,13 +48,6 @@ class BeerCellar: Identifiable, Codable, ObservableObject {
         var addressContainer = container.nestedContainer(keyedBy: Address.CodingKeys.self, forKey: .address)
         try addressContainer.encode(address, forKey: .address)
     }
-    
-    init(id: Int, name: String) {
-        self.id = id
-        self.name = name
-        self.latitude = 999.0
-        self.longitude = 999.0
-        self.address = Address(address: name, zipCode: name, city: name, country: name)
-    }
+    */
 
 }
