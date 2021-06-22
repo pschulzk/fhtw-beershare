@@ -5,7 +5,7 @@
 //  Created by Chris on 12.06.21.
 //
 import Foundation
-import Bagel
+//import Bagel
 
 enum HttpMethod: String {
     case GET = "GET"
