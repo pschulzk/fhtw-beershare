@@ -68,23 +68,19 @@ struct BierkellerDetailView: View {
         .navigationBarTitle("Bierkeller Details")
         .navigationBarItems(trailing: Button(action: {
             print("Button pushed!")
+            client.putData(additiveUrl: "beercellar/\(self.item.id)", ofType: BeerCellar.self, callback: { result in
+                result.name = self.item.name
+            }, payload: self.item)
         }) {
-            Image(systemName: "multiply.circle.fill")
-                .foregroundColor(.gray)
+            Image(systemName: "checkmark")
+                .foregroundColor(.green)
                 .padding(.trailing, 8)
         })
         .navigationBarTitleDisplayMode(.inline)
         .padding()
         .onAppear(perform: {
             self.name = self.item.name
-            self.address = "placeholder for address function"
-            /*
-            client.getData(additiveUrl: "beercellar/\(self.id)", ofType: BeerCellar.self, callback: { result in
-                self.item = result
-                self.name = self.item.name
-                self.address = "placeholder for address function"
-            })
-            */
+            self.address = "placeholder"
         })
     }
 

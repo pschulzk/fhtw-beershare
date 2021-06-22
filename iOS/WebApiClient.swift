@@ -21,13 +21,13 @@ public class WebApiClient {
     /**
      * Generic GET method.
      */
-    func getData<T : Decodable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void) {
+    func getData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void) {
         let urlString = self.BASE_URL + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .GET, completionHandler: { data, response, error in
                 if let data = data {
-                    if let decodedResponse: T = try? JSONDecoder().decode(T.self, from: data){
+                    if let decodedResponse: T = try? JSONDecoder().decode(T.self, from: data) {
                         DispatchQueue.main.async{
                             callback(decodedResponse)
                             // everything worked
@@ -41,14 +41,14 @@ public class WebApiClient {
             })
         }
         catch let error as NSError {
-            print("Caught GET request error to \(urlString): \(error.localizedDescription), \(error.domain), \(error.code)")
+            print("Caught GET request error to \(urlString): \(error.localizedDescription), \(error.domain), \(error.code), \(error.userInfo)")
         }
     }
     
     /**
      * Generic POST method.
      */
-    func postData<T : Decodable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void, payload: T? = nil) {
+    func postData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void, payload: T? = nil) {
         let urlString = self.BASE_URL + additiveUrl
 
         do {
@@ -68,7 +68,50 @@ public class WebApiClient {
             }, payload: payload)
         }
         catch let error as NSError {
-            print("Caught POST request error to \(urlString): \(error.localizedDescription), \(error.domain), \(error.code)")
+            print("Caught POST request error to \(urlString): \(error.localizedDescription), \(error.domain), \(error.code), \(error.userInfo)")
+        }
+    }
+    
+    /**
+     * Generic PUT method.
+     */
+    func putData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void, payload: T? = nil) {
+        let urlString = self.BASE_URL + additiveUrl
+
+        do {
+            try makeRequest(urlString: urlString, method: .PUT, completionHandler: { data, response, error in
+                if let data = data {
+                    if let decodedResponse: T = try? JSONDecoder().decode(T.self, from: data){
+                        DispatchQueue.main.async{
+                            callback(decodedResponse)
+                            // everything worked
+                            print("Request successful")
+                        }
+                        return
+                    }
+                }
+                // if we're still here there was a problem
+                print("Request failed: \(error?.localizedDescription ?? "Unknown error")")
+            }, payload: payload)
+        }
+        catch let error as NSError {
+            print("Caught PUT request error to \(urlString): \(error.localizedDescription), \(error.domain), \(error.code), \(error.userInfo)")
+        }
+    }
+    
+    /**
+     * Generic DELETE method.
+     */
+    func deleteData(additiveUrl: String, callback: @escaping () -> Void) {
+        let urlString = self.BASE_URL + additiveUrl
+
+        do {
+            try makeRequest(urlString: urlString, method: .DELETE, completionHandler: { data, response, error in
+                print("Request successful")
+            })
+        }
+        catch let error as NSError {
+            print("Caught DELETE request error to \(urlString): \(error.localizedDescription), \(error.domain), \(error.code), \(error.userInfo)")
         }
     }
     
@@ -77,7 +120,7 @@ public class WebApiClient {
      */
     private func makeRequest(urlString: String, method: HttpMethod, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) throws {
         guard let url: URL = URL(string: urlString) else {
-            throw NSError(domain: "URL format error", code: 999, userInfo: ["Malformed URL strin parameter":urlString] )
+            throw NSError(domain: "URL format error", code: 901, userInfo: ["Malformed URL strin parameter": urlString] )
         }
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
@@ -87,20 +130,28 @@ public class WebApiClient {
     }
     
     /**
-     * Generic request method.
+     * Generic request method with payload.
      */
-    private func makeRequest<T : Decodable>(urlString: String, method: HttpMethod, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void, payload: T? = nil) throws {
+    private func makeRequest<T : Codable>(urlString: String, method: HttpMethod, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void, payload: T? = nil) throws {
         guard let url: URL = URL(string: urlString) else {
-            throw NSError(domain: "URL format error", code: 999, userInfo: ["Malformed URL strin parameter":urlString] )
+            throw NSError(domain: "URL format error", code: 902, userInfo: ["Malformed URL string parameter": urlString] )
         }
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         
         if payload != nil {
-            if ((try? JSONSerialization.data(withJSONObject: payload!)) != nil) {
-                let task = makeSession().dataTask(with: request, completionHandler: completionHandler)
-                task.resume()
+            guard let jsonObj = try? JSONEncoder().encode(payload) else {
+                throw NSError(domain: "Data format error", code: 903, userInfo: ["Malformed Data in object of class": String(describing: T.self)] )
             }
+            let test = JSONSerialization.isValidJSONObject(jsonObj)
+            print(test ? "TRUE" : "FALSE")
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObj, options: []) else {
+                throw NSError(domain: "JSON format error", code: 904, userInfo: ["Malformed JSON in object of class": String(describing: T.self)] )
+            }
+            print(jsonData)
+            request.httpBody = jsonData
+            let task = makeSession().dataTask(with: request, completionHandler: completionHandler)
+            task.resume()
         } else {
             let task = makeSession().dataTask(with: request, completionHandler: completionHandler)
             task.resume()
