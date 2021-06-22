@@ -9,22 +9,45 @@ import SwiftUI
 import MapKit
 
 struct TestMapView: View {
-    @State private var centerCoordinate = CLLocationCoordinate2D()
-    
+    var client = WebApiClient()
+    @State private var locations: [BeerCellar] = []
+    @State private var coordinateRegion = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 48.20849, longitude: 16.37298),
+        span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+    )
+
     var body: some View {
-        ZStack{
-            MapView(centerCoordinate: $centerCoordinate)
-            Circle()
-                .fill(Color.blue)
-            opacity(0.3)
-            frame(width: 32, height: 32)
+      Map(
+        coordinateRegion: $coordinateRegion,
+        annotationItems: locations
+      ) { location in
+        MapAnnotation(
+          coordinate: CLLocationCoordinate2D(
+            latitude: location.latitude,
+            longitude: location.longitude
+          )
+        ) {
+          VStack {
+            Text(location.name)
+              .font(.caption2)
+              .bold()
+            Image(systemName: "mappin")
+          }
         }
+      }
+      .onAppear(perform: {client.getData(additiveUrl: "beercellar", ofType: [BeerCellar].self, callback: {
+            result in
+            self.locations = result
+            })
+      for element in self.locations{
+        print("\(element.address)\n")
+      }
+        })
     }
 }
 
-//struct TestMapView_Previews: PreviewProvider {
-//    static var previews: some View {
-//
-//        MapView()
-//    }
-//}
+struct TestMapView_Previews: PreviewProvider {
+    static var previews: some View {
+        TestMapView()
+    }
+}
