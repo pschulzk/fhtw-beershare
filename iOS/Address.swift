@@ -9,12 +9,19 @@ import Foundation
 
 // MARK: - Address
 struct Address: Identifiable, Codable {
-    var id = UUID()
-    let address, zipCode, city, country: String
+    let id = UUID()
+    var address, zipCode, city, country: String
 
     enum CodingKeys: String, CodingKey {
         case address
         case zipCode = "zip_code"
         case city, country
+    }
+    
+    init(address: String, zipCode: String, city: String, country: String) {
+        self.address = address
+        self.zipCode = zipCode
+        self.city = city
+        self.country = country
     }
 }

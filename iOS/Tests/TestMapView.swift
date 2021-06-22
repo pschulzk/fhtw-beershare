@@ -42,7 +42,7 @@ struct TestMapView: View {
           }
         }
       }
-      .onAppear(perform: {client.getData(additiveUrl: "beercellar", callback: {
+      .onAppear(perform: {client.getData(additiveUrl: "beercellar", ofType: [BeerCellar].self, callback: {
             result in
             self.locations = result
             })
