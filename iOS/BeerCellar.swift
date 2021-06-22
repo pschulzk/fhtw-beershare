@@ -12,8 +12,8 @@ struct BeerCellar:  Identifiable, Codable {
         return lhs.name != rhs.name
     }
     
-    var id : Int
-    let name: String
-    let latitude, longitude: Double
-    let address: Address
+    var id: Int
+    var name: String
+    var latitude, longitude: Double
+    var address: Address
 }

@@ -9,8 +9,8 @@ import Foundation
 
 // MARK: - Address
 struct Address: Identifiable, Codable {
-    var id = UUID()
-    let address, zipCode, city, country: String
+    let id = UUID()
+    var address, zipCode, city, country: String
 
     enum CodingKeys: String, CodingKey {
         case address
