@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct TestMapView: View {
+struct BeerSearchView: View {
     var client = WebApiClient()
     @State private var locations: [BeerCellar] = []
     @State private var coordinateRegion = MKCoordinateRegion(
@@ -24,22 +24,19 @@ struct TestMapView: View {
         MapAnnotation(
           coordinate: CLLocationCoordinate2D(
             latitude: location.latitude,
-            longitude: location.longitude
-          )
+            longitude: location.longitude)
         ) {
-          VStack {
-            NavigationLink(
-                destination: BierkellerDetailView(),
-                label: {
+            NavigationLink(destination: BierkellerDetailView(item: location)){
+                VStack{
                     Text(location.name)
                       .font(.caption2)
                       .bold()
-                })
-            
-            Image(systemName: "mappin")
-                .foregroundColor(.red)
-                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-          }
+                    Image(systemName: "mappin")
+                        .foregroundColor(.red)
+                        .shadow(radius: 5)
+                }
+            }
+                
         }
       }
       .onAppear(perform: {client.getData(additiveUrl: "beercellar", ofType: [BeerCellar].self, callback: {
@@ -53,8 +50,8 @@ struct TestMapView: View {
     }
 }
 
-struct TestMapView_Previews: PreviewProvider {
+struct BeerSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        TestMapView()
+        BeerSearchView()
     }
 }
