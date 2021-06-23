@@ -53,11 +53,6 @@ class LoginActivity : AppCompatActivity() {
         mEtUsername = findViewById(R.id.etUsername)
         mEtPassword = findViewById(R.id.etPassword)
 
-        // TODO: remove me
-        mEtPassword.setText("andreas")
-
-        // testLogin()
-
         mBtnLogin = findViewById(R.id.btnLogin)
         mBtnLogin.setOnClickListener {
             mBtnLogin.isEnabled = false
