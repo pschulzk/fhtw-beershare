@@ -36,7 +36,7 @@ struct MainView: View {
                     .padding(5)
                     
                     Spacer()
-                    NavigationLink(destination: BierkellerView()) {
+                    NavigationLink(destination: BierkellerView(mode: .MODIFY)) {
                         Image("Bierkeller")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -51,6 +51,7 @@ struct MainView: View {
             .navigationBarTitle("Hauptmenü")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         
     }
     

@@ -7,12 +7,14 @@
 
 import Foundation
 
-class BeerCellar: Identifiable, Codable, ObservableObject {
+struct BeerCellar: Identifiable, Codable {
     
     var id: Int
     var name: String
     var latitude, longitude: Double
     var address: Address
+    var owner: String
+    var entries: [BeerCellarEntry]?
     
     /*
     enum CodingKeys: String, CodingKey {
@@ -21,6 +23,8 @@ class BeerCellar: Identifiable, Codable, ObservableObject {
         case latitude
         case longitude
         case address
+        case owner
+        case entries
     }
     */
 
@@ -34,6 +38,9 @@ class BeerCellar: Identifiable, Codable, ObservableObject {
 
         let addressContainer = try container.nestedContainer(keyedBy: Address.CodingKeys.self, forKey: .address)
         address = try addressContainer.decode(Address.self, forKey: .address)
+        
+        let entriesContainer = try container.nestedContainer(keyedBy: BeerCellarEntry.CodingKeys.self, forKey: .entries)
+        entries = try entriesContainer.decode([BeerCellarEntry].self, forKey: .entries)
     }
     */
     

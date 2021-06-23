@@ -9,8 +9,15 @@ import SwiftUI
 
 struct BierkellerView: View {
     
+    var mode: ViewMode
+    var id: Int?
+
     @State private var items = [BeerCellar]()
     private var client = WebApiClient()
+    
+    init(mode: ViewMode) {
+        self.mode = mode
+    }
     
     var body: some View {
         VStack {
@@ -28,7 +35,7 @@ struct BierkellerView: View {
                 List {
                     ForEach(items, id: \.id) { item in
                         VStack(alignment: .leading) {
-                            NavigationLink(destination: BierkellerDetailView(item: item)) {
+                            NavigationLink(destination: BierkellerDetailView(mode: self.mode, id: item.id)) {
                                 Text(item.name)
                             }
                         }
@@ -53,7 +60,7 @@ struct BierkellerView: View {
 
 struct BierkellerView_Previews: PreviewProvider {
     static var previews: some View {
-        BierkellerView()
+        BierkellerView(mode: ViewMode.CREATE)
     }
 }
  

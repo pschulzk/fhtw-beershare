@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct BierkellerDetailView: View {
-    @State var item: BeerCellar
-    @State var name = ""
-    @State var address = ""
-    private var client = WebApiClient()
+
+    var mode: ViewMode
+    var id: Int?
+
+    @State private var item: BeerCellar?
+    @State private var name: String = ""
+    @State private var address: String = "NOT IMPLEMENTED"
+    private let client = WebApiClient()
     
-    init(item: BeerCellar) {
-        self.item = item
+    func getItem(id: Int) {
+        client.getData(additiveUrl: "beercellar/\(id)", ofType: BeerCellar.self, callback: { result in
+            self.item = result
+            self.name = result.name
+        })
     }
 
     var body: some View {
@@ -47,20 +54,27 @@ struct BierkellerDetailView: View {
                 }
                 .padding([.top, .leading, .trailing])
                 Divider()
-                List{
-                    HStack{
-                        Text("Biersorte 1")
-                        Spacer()
-                        Text("10000")
+
+                if let entries = self.item?.entries {
+                    List{
+                        ForEach(entries, id: \.self) { item in
+                            NavigationLink(destination: BeerEntryDetailView(mode: self.mode, beerCellarId: self.item!.id, item: item)) {
+                                HStack{
+                                    Text(item.beerName)
+                                    Spacer()
+                                    Text(String(item.amount))
+                                }
+                            }
+                        }
                     }
-                    HStack{
-                        Text("Biersorte 2")
+                    .listStyle(PlainListStyle())
+                } else {
+                    VStack{
+                        Text("Keine Biere enthalten.")
                         Spacer()
-                        Text("10000")
                     }
                 }
-                .listStyle(PlainListStyle())
-                
+
             }
             Spacer()
             
@@ -68,10 +82,11 @@ struct BierkellerDetailView: View {
         .navigationBarTitle("Bierkeller Details")
         .navigationBarItems(trailing: Button(action: {
             print("Button pushed!")
-            self.item.name = self.name
-            client.putData(additiveUrl: "beercellar/\(self.item.id)", ofType: BeerCellar.self, callback: { result in
-                self.item = result
-            }, payload: self.item)
+            if self.item != nil {
+                client.putData(additiveUrl: "beercellar/\(self.item!.id)", ofType: BeerCellar.self, callback: { result in
+                    self.item = result
+                }, payload: self.item)
+            }
         }) {
             Image(systemName: "checkmark")
                 .foregroundColor(.green)
@@ -80,17 +95,16 @@ struct BierkellerDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .padding()
         .onAppear(perform: {
-            self.name = self.item.name
-            self.address = "placeholder"
+            if self.id != nil {
+                getItem(id: self.id!)
+            }
         })
     }
 
 }
 
-/*
 struct BierkellerDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        BierkellerDetailView(item: BeerCellar(id: 42, name: "test"))
+        BierkellerDetailView(mode: ViewMode.CREATE, id: 3)
     }
 }
-*/

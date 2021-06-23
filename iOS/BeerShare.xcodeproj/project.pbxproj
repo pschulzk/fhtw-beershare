@@ -26,6 +26,9 @@
 		83EC221E26696D4300467F6B /* BierkellerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EC221D26696D4300467F6B /* BierkellerDetailView.swift */; };
 		E809C1E1267627B2007899B6 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = E809C1E0267627B2007899B6 /* Address.swift */; };
 		E809C1E3267627ED007899B6 /* BeerCellar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E809C1E2267627ED007899B6 /* BeerCellar.swift */; };
+		E80F7AB926836ABD00B78BDA /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80F7AB826836ABD00B78BDA /* Shared.swift */; };
+		E80F7ABB2683702E00B78BDA /* BeerCellarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80F7ABA2683702E00B78BDA /* BeerCellarEntry.swift */; };
+		E80F7AC126839C8A00B78BDA /* BeerEntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80F7AC026839C8A00B78BDA /* BeerEntryDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +53,9 @@
 		83EC221D26696D4300467F6B /* BierkellerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BierkellerDetailView.swift; sourceTree = "<group>"; };
 		E809C1E0267627B2007899B6 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		E809C1E2267627ED007899B6 /* BeerCellar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerCellar.swift; sourceTree = "<group>"; };
+		E80F7AB826836ABD00B78BDA /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		E80F7ABA2683702E00B78BDA /* BeerCellarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerCellarEntry.swift; sourceTree = "<group>"; };
+		E80F7AC026839C8A00B78BDA /* BeerEntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerEntryDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,9 @@
 		83306EE02668F7D7009E6FC8 = {
 			isa = PBXGroup;
 			children = (
+				E80F7AC026839C8A00B78BDA /* BeerEntryDetailView.swift */,
+				E80F7ABA2683702E00B78BDA /* BeerCellarEntry.swift */,
+				E80F7AB826836ABD00B78BDA /* Shared.swift */,
 				E809C1E2267627ED007899B6 /* BeerCellar.swift */,
 				E809C1E0267627B2007899B6 /* Address.swift */,
 				83DF103326752BD0001C708B /* Beer.swift */,
@@ -226,9 +235,12 @@
 				83DF103226752BB1001C708B /* TestView.swift in Sources */,
 				83EC221E26696D4300467F6B /* BierkellerDetailView.swift in Sources */,
 				83636473266ACE65007C4618 /* Location.swift in Sources */,
+				E80F7AC126839C8A00B78BDA /* BeerEntryDetailView.swift in Sources */,
+				E80F7ABB2683702E00B78BDA /* BeerCellarEntry.swift in Sources */,
 				8346872126693F8C0051C101 /* ManagementDetailView.swift in Sources */,
 				8346871426692C5B0051C101 /* OrderManagementView.swift in Sources */,
 				837501752677567800530F9C /* TestMapView.swift in Sources */,
+				E80F7AB926836ABD00B78BDA /* Shared.swift in Sources */,
 				83468725266948D20051C101 /* Order.swift in Sources */,
 				8346871626692CAB0051C101 /* BierkellerView.swift in Sources */,
 				83306EFE26692AC7009E6FC8 /* OrderPositionView.swift in Sources */,
