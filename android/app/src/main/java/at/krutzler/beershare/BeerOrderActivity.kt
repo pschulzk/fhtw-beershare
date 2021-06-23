@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import at.krutzler.beershare.repository.BeerCellarRepository
 import at.krutzler.beershare.repository.BeerOrderRepository
 import at.krutzler.beershare.webapi.WebApiClient
@@ -103,9 +104,11 @@ class BeerOrderActivity : AppCompatActivity() {
                             } else {
                                 // not enough beers available
                                 Log.d(TAG, "not enough beers available")
+                                Toast.makeText(applicationContext, getString(R.string.notEnoughBeer), Toast.LENGTH_LONG).show()
                             }
                         } ?: run {
                             Log.d(TAG, "invalid amount entered")
+                            Toast.makeText(applicationContext, getString(R.string.invalidBeerAmount), Toast.LENGTH_LONG).show()
                         }
                     }
                 }
