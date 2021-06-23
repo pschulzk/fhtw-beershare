@@ -39,7 +39,7 @@ class BeerOrderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_beer_order)
-        title = "Neue Bestellung"
+        title = getString(R.string.newOrder)
 
         mBeerOrder = intent.getParcelableExtra(BEER_ORDER_PARCELABLE_EXTRA)
         mBeerCellar = intent.getParcelableExtra(BEER_CELLAR_PARCELABLE_EXTRA)
@@ -62,9 +62,9 @@ class BeerOrderActivity : AppCompatActivity() {
         mBeerOrder?.also { beerOrder ->
             // beerOrder exists
             title = if (beerOrder.buyer == WebApiClient.username) {
-                "Eingehende Bestellung"
+                getString(R.string.incomingOrder)
             } else {
-                "Ausgehende Bestellung"
+                getString(R.string.outgoingOrder)
             }
             mTvMaxAmount.visibility = View.GONE
             findViewById<EditText>(R.id.etOrderName).setText(beerOrder.beerName)
@@ -85,7 +85,7 @@ class BeerOrderActivity : AppCompatActivity() {
             // new beerOrder
             mBeerCellar?.also { beerCellar ->
                 beerCellar.entries?.get(beerCellarEntryPosition)?.let { beerCellarEntry ->
-                    mTvMaxAmount.text = "Maximum: ${beerCellarEntry.amount}"
+                    mTvMaxAmount.text = getString(R.string.maximumBeerAmount, beerCellarEntry.amount)
 
                     findViewById<EditText>(R.id.etOrderName).setText(beerCellarEntry.beerName)
 

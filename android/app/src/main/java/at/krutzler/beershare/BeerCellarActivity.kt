@@ -58,7 +58,7 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
         mOrderMode = intent.getBooleanExtra(ORDER_MODE_EXTRA, false)
 
         title = if (mOrderMode) {
-            "Bierkeller von ${mBeerCellar?.owner}"
+            getString(R.string.beerCellarFrom, mBeerCellar?.owner)
         } else {
             getString(R.string.beerCellarTitle)
         }
@@ -145,8 +145,8 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
         } ?: run {
             // new beerCellar
 
-            title = "Bierkeller hinzufügen"
-            mEtBeerCellarName.setText("Neuer Bierkeller")
+            title = getString(R.string.addBeerCellarTitle)
+            mEtBeerCellarName.setText(getString(R.string.newBeerCellarName))
             btnAddBeer.visibility = View.GONE
             findViewById<LinearLayout>(R.id.llHeader).visibility = View.GONE
             recyclerView.visibility = View.GONE

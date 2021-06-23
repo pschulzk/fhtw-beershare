@@ -24,4 +24,13 @@
     <string name="backendHostname">Backend hostname</string>
     <string name="authenticationFailed">Authentication failed</string>
     <string name="backendNotReachable">Backend not reachable</string>
+    <string name="notEnoughBeer">Nicht genügend Bier vorhanden</string>
+    <string name="invalidBeerAmount">Ungültige Menge eingegeben</string>
+    <string name="incomingOrder">Eingehende Bestellung</string>
+    <string name="outgoingOrder">Ausgehende Bestellung</string>
+    <string name="newOrder">Neue Bestellung</string>
+    <string name="addBeerCellarTitle">Bierkeller hinzufügen</string>
+    <string name="newBeerCellarName">Neuer Bierkeller</string>
+    <string name="maximumBeerAmount">Maximum: %1$d</string>
+    <string name="beerCellarFrom">Bierkeller von %1$s</string>
 </resources>
