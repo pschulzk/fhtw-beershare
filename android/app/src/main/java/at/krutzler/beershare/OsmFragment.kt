@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import at.krutzler.beershare.repository.BeerCellarRepository
 import at.krutzler.beershare.webapi.WebApiClient
 import org.osmdroid.config.Configuration
-import org.osmdroid.events.MapEventsReceiver
+import org.osmdroid.events.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -174,6 +174,23 @@ class OsmFragment : Fragment() {
                 longitudeString?.toDouble() ?: 16.377255)
         )
 
+        // listen to scrolling and zooming
+        mMapView.addMapListener(DelayedMapListener(object : MapListener {
+            override fun onZoom(e: ZoomEvent?): Boolean {
+                (e?.source?.mapCenter as? GeoPoint)?.let {
+                    mHostActivityInterface?.onMapCenterChanged(it, e.source.projection.boundingBox.diagonalLengthInMeters)
+                }
+                return true
+            }
+
+            override fun onScroll(e: ScrollEvent): Boolean {
+                (e.source.mapCenter as? GeoPoint)?.let {
+                    mHostActivityInterface?.onMapCenterChanged(it, e.source.projection.boundingBox.diagonalLengthInMeters)
+                }
+                return true
+            }
+        }, 500))
+
         mMapView.overlays.add(MapEventsOverlay(object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
 
@@ -271,6 +288,7 @@ class OsmFragment : Fragment() {
 
     interface Interface {
         fun onLocationChanged(loc: Location)
+        fun onMapCenterChanged(center: GeoPoint, diagonalLengthInMeters: Double)
     }
 
     private inner class LocationProvider(context: Context) : GpsMyLocationProvider(context) {

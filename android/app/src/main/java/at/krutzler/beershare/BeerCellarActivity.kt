@@ -22,6 +22,7 @@ import at.krutzler.beershare.adapter.BeerCellarEntryListAdapter
 import at.krutzler.beershare.repository.BeerCellarRepository
 import at.krutzler.beershare.utils.ArrayAdapterNoFilter
 import at.krutzler.beershare.webapi.WebApiClient
+import org.osmdroid.util.GeoPoint
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -271,5 +272,8 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
             mNewAddress = it
             mEtBeerCellarAddress.setText(it.getAddressLine(0))
         }
+    }
+
+    override fun onMapCenterChanged(center: GeoPoint, diagonalLengthInMeters: Double) {
     }
 }

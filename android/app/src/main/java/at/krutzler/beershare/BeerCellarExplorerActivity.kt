@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import at.krutzler.beershare.repository.BeerCellarRepository
 import at.krutzler.beershare.webapi.WebApiClient
+import org.osmdroid.util.GeoPoint
+import kotlin.math.round
 
 class BeerCellarExplorerActivity : AppCompatActivity(), OsmFragment.Interface {
 
@@ -32,9 +34,14 @@ class BeerCellarExplorerActivity : AppCompatActivity(), OsmFragment.Interface {
     }
 
     override fun onLocationChanged(loc: Location) {
+
+    }
+
+    override fun onMapCenterChanged(center: GeoPoint, diagonalLengthInMeters: Double) {
         Log.d(TAG, "update nearby beer cellars")
 
-        BeerCellarRepository(mClient).getNearby(loc.latitude, loc.longitude, 1) { beerCellars ->
+        val distance = round(diagonalLengthInMeters / 2000.0).toInt().coerceAtLeast(1)
+        BeerCellarRepository(mClient).getNearby(center.latitude, center.longitude, distance) { beerCellars ->
             (supportFragmentManager.findFragmentById(R.id.flOsmFragment) as? OsmFragment)?.setBeerCellars(beerCellars)
         }
     }
