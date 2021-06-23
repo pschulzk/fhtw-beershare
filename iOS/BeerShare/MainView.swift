@@ -17,7 +17,7 @@ struct MainView: View {
             HStack{
                 VStack{
                     Spacer()
-                    NavigationLink(destination: TestMapView()){//OrderPositionView()) {
+                    NavigationLink(destination: BeerSearchView()){//OrderPositionView()) {
                         Image("Biersuche")
                             .resizable()
                             .aspectRatio(contentMode: .fit)

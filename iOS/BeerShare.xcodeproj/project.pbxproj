@@ -12,14 +12,13 @@
 		83306EEF2668F7D7009E6FC8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83306EEE2668F7D7009E6FC8 /* MainView.swift */; };
 		83306EF12668F7D9009E6FC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83306EF02668F7D9009E6FC8 /* Assets.xcassets */; };
 		83306EF42668F7D9009E6FC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83306EF32668F7D9009E6FC8 /* Preview Assets.xcassets */; };
-		83306EFE26692AC7009E6FC8 /* OrderPositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83306EFD26692AC7009E6FC8 /* OrderPositionView.swift */; };
 		8346871426692C5B0051C101 /* OrderManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8346871326692C5B0051C101 /* OrderManagementView.swift */; };
 		8346871626692CAB0051C101 /* BierkellerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8346871526692CAB0051C101 /* BierkellerView.swift */; };
 		8346872126693F8C0051C101 /* ManagementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8346872026693F8C0051C101 /* ManagementDetailView.swift */; };
 		83468723266941120051C101 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83468722266941120051C101 /* Package.swift */; };
 		83468725266948D20051C101 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83468724266948D20051C101 /* Order.swift */; };
 		83636473266ACE65007C4618 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636472266ACE65007C4618 /* Location.swift */; };
-		837501752677567800530F9C /* TestMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837501742677567800530F9C /* TestMapView.swift */; };
+		837501752677567800530F9C /* BeerSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837501742677567800530F9C /* BeerSearchView.swift */; };
 		83DF10302674EE37001C708B /* WebApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF102F2674EE37001C708B /* WebApiClient.swift */; };
 		83DF103226752BB1001C708B /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF103126752BB1001C708B /* TestView.swift */; };
 		83DF103426752BD0001C708B /* Beer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DF103326752BD0001C708B /* Beer.swift */; };
@@ -39,14 +38,13 @@
 		83306EF02668F7D9009E6FC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83306EF32668F7D9009E6FC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		83306EF52668F7D9009E6FC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		83306EFD26692AC7009E6FC8 /* OrderPositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderPositionView.swift; sourceTree = "<group>"; };
 		8346871326692C5B0051C101 /* OrderManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderManagementView.swift; sourceTree = "<group>"; };
 		8346871526692CAB0051C101 /* BierkellerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BierkellerView.swift; sourceTree = "<group>"; };
 		8346872026693F8C0051C101 /* ManagementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementDetailView.swift; sourceTree = "<group>"; };
 		83468722266941120051C101 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		83468724266948D20051C101 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		83636472266ACE65007C4618 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		837501742677567800530F9C /* TestMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMapView.swift; sourceTree = "<group>"; };
+		837501742677567800530F9C /* BeerSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerSearchView.swift; sourceTree = "<group>"; };
 		83DF102F2674EE37001C708B /* WebApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebApiClient.swift; sourceTree = "<group>"; };
 		83DF103126752BB1001C708B /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		83DF103326752BD0001C708B /* Beer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beer.swift; sourceTree = "<group>"; };
@@ -130,7 +128,7 @@
 		83468717266930AC0051C101 /* BeerSearch */ = {
 			isa = PBXGroup;
 			children = (
-				83306EFD26692AC7009E6FC8 /* OrderPositionView.swift */,
+				837501742677567800530F9C /* BeerSearchView.swift */,
 				832CEC39266E8032002CE2F5 /* OrderView.swift */,
 			);
 			path = BeerSearch;
@@ -157,7 +155,6 @@
 		837501762677576F00530F9C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				837501742677567800530F9C /* TestMapView.swift */,
 				83DF103126752BB1001C708B /* TestView.swift */,
 			);
 			path = Tests;
@@ -241,9 +238,9 @@
 				8346871426692C5B0051C101 /* OrderManagementView.swift in Sources */,
 				837501752677567800530F9C /* TestMapView.swift in Sources */,
 				E80F7AB926836ABD00B78BDA /* Shared.swift in Sources */,
+				837501752677567800530F9C /* BeerSearchView.swift in Sources */,
 				83468725266948D20051C101 /* Order.swift in Sources */,
 				8346871626692CAB0051C101 /* BierkellerView.swift in Sources */,
-				83306EFE26692AC7009E6FC8 /* OrderPositionView.swift in Sources */,
 				83DF103426752BD0001C708B /* Beer.swift in Sources */,
 				E809C1E1267627B2007899B6 /* Address.swift in Sources */,
 				83306EEF2668F7D7009E6FC8 /* MainView.swift in Sources */,
