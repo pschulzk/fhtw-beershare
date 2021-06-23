@@ -26,9 +26,6 @@ import org.osmdroid.views.overlay.CopyrightOverlay
 import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.ScaleBarOverlay
-import org.osmdroid.views.overlay.compass.CompassOverlay
-import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
-import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.IMyLocationConsumer
 import org.osmdroid.views.overlay.mylocation.IMyLocationProvider
@@ -84,9 +81,7 @@ class OsmFragment : Fragment() {
     // OpenStreetMap
     private lateinit var mMapView: MapView;
     private lateinit var mLocationOverlay: MyLocationNewOverlay
-    private lateinit var mCompassOverlay: CompassOverlay
     private lateinit var mScaleBarOverlay: ScaleBarOverlay
-    private lateinit var mRotationGestureOverlay: RotationGestureOverlay
     private lateinit var mCopyrightOverlay: CopyrightOverlay
 
     // callback interface to host activity
@@ -142,21 +137,11 @@ class OsmFragment : Fragment() {
         mCopyrightOverlay = CopyrightOverlay(context)
         mMapView.overlays.add(mCopyrightOverlay)
 
-        // on screen compass
-        mCompassOverlay = CompassOverlay(context, InternalCompassOrientationProvider(context), mMapView)
-        mCompassOverlay.enableCompass()
-        mMapView.overlays.add(mCompassOverlay)
-
         // map scale
         mScaleBarOverlay = ScaleBarOverlay(mMapView)
         mScaleBarOverlay.setCentred(true)
         mScaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10)
         mMapView.overlays.add(mScaleBarOverlay)
-
-        // support for map rotation
-        mRotationGestureOverlay = RotationGestureOverlay(mMapView)
-        mRotationGestureOverlay.isEnabled = true
-        mMapView.overlays.add(mRotationGestureOverlay)
 
         // needed for pinch zooms
         mMapView.setMultiTouchControls(true)
