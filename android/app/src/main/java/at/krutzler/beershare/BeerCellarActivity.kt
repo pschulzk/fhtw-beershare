@@ -91,7 +91,6 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
             android.R.layout.simple_dropdown_item_1line,
             mutableListOf()
         )
-        //mEtBeerCellarAddress.setAdapter(mAutoAdapter)
 
         // button
         val btnAddBeer = findViewById<Button>(R.id.btnAddBeer)
@@ -134,6 +133,12 @@ class BeerCellarActivity : AppCompatActivity(), OsmFragment.Interface {
 
             if (mOrderMode) {
                 btnAddBeer.visibility = View.GONE
+
+                mEtBeerCellarName.isFocusable = false
+                mEtBeerCellarName.isFocusableInTouchMode = false
+
+                mEtBeerCellarAddress.isFocusable = false
+                mEtBeerCellarAddress.isFocusableInTouchMode = false
             }
 
             updateBeerCellar()
