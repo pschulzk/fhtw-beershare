@@ -9,13 +9,14 @@ import SwiftUI
 
 struct BierkellerDetailView: View {
 
-    var mode: ViewMode
-    var id: Int?
+    @State var mode: ViewMode
+    @State var id: Int?
 
     @State private var item: BeerCellar?
     @State private var name: String = ""
     @State private var address: String = ""
     @State private var showAlert = false
+    private var isDisabled: Bool { self.mode == .READONLY }
     private let client = WebApiClient()
     
     func getItem(id: Int) {
@@ -42,22 +43,27 @@ struct BierkellerDetailView: View {
                 Text("Name")
                     .font(.caption)
                 TextField("Name", text: $name)
+                    .disabled(isDisabled)
                     .padding(8.0)
-                    .border(Color.gray)
+                    .border(isDisabled ? Color.white : Color.gray)
+
                 Text("Adresse")
                     .font(.caption)
                 TextField("Adresse", text: $address)
+                    .disabled(isDisabled)
                     .padding(8.0)
-                    .border(Color.gray)
+                    .border(isDisabled ? Color.white : Color.gray)
                 
-                NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id)) {
-                    Image("AddBeer")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 200.0, height: 40.0)
-                        .cornerRadius(10)
+                if !isDisabled {
+                    NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id)) {
+                        Image("AddBeer")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 200.0, height: 40.0)
+                            .cornerRadius(10)
+                    }
+                    .padding(.top, 30.0)
                 }
-                .padding(.top, 30.0)
 
                 HStack{
                     Text("Biersorten")
@@ -93,14 +99,14 @@ struct BierkellerDetailView: View {
         }
         .padding()
         .navigationBarTitle("Bierkeller Details")
-        .navigationBarItems(trailing: Button(action: {
+        .navigationBarItems(trailing: !isDisabled ? Button(action: {
             print("Button pushed!")
             updateItem()
         }) {
             Image(systemName: "checkmark")
                 .foregroundColor(.green)
                 .padding(.trailing, 8)
-        })
+            } : nil)
         .navigationBarTitleDisplayMode(.inline)
         .alert(isPresented: $showAlert){
             Alert(title: Text("Erfolg"), message: Text("Eingabe erfolgreich!"))

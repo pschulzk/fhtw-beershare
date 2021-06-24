@@ -7,6 +7,13 @@
 
 import Foundation
 
+enum OrderStatus: Int {
+    case PLACED = 1
+    case ACCEPTED = 2
+    case DECLINED = 3
+    case DONE = 4
+}
+
 enum ViewMode: String {
     case CREATE = "CREATE"
     case MODIFY = "MODIFY"

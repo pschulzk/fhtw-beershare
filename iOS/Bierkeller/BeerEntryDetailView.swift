@@ -15,7 +15,7 @@ struct BeerEntryDetailView: View {
     @State private var name: String = ""
     @State private var amount: String = "0"
     @State private var showSuccess = false
-    private var isDisabled: Bool { self.mode != .CREATE }
+    private var isDisabled: Bool { self.mode == .READONLY }
     private let client = WebApiClient()
     
     func updateItem() {
@@ -30,34 +30,63 @@ struct BeerEntryDetailView: View {
         }
     }
     
+    func orderBeer() {
+        let payload = Order(
+            amount: Int(self.amount) ?? 0,
+            status: OrderStatus.PLACED.rawValue,
+            beerCellar: self.beerCellarId!,
+            beer: self.item!.beer
+        )
+        client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
+            showSuccess = true
+        }, payload: payload)
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Name")
                 .font(.caption)
             TextField("Name", text: $name)
-                .disabled(isDisabled)
+                .disabled(true)
                 .padding(8.0)
-                .border(isDisabled ? Color.white : Color.gray)
         
             Text("Menge")
                 .font(.caption)
             TextField("Menge", text: $amount)
                 .padding(8.0)
                 .border(Color.gray)
+            
+            if self.mode == .READONLY {
+                Button(action: {
+                    print("Button pushed!")
+                    orderBeer()
+                }) {
+                    HStack(alignment: .top) {
+                        Image(systemName: "checkmark")
+                            .foregroundColor(.white)
+                            .padding(8)
+                        Text("Bestellen")
+                            .foregroundColor(.white)
+                            .padding(8)
+                    }
+                }
+                .background(Color.orange)
+                .padding(2)
+            }
 
             Spacer()
         }
         .padding()
-        .navigationBarTitle("Bier bearbeiten")
+        .navigationBarTitle(isDisabled ? "Bier bestellen" : "Bier bearbeiten")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing: Button(action: {
+        .navigationBarItems(trailing: !isDisabled ? Button(action: {
             print("Button pushed!")
             updateItem()
         }) {
             Image(systemName: "checkmark")
                 .foregroundColor(.green)
                 .padding(.trailing, 8)
-        })
+            } : nil)
         .alert(isPresented: $showSuccess){
             Alert(title: Text("Erfolg"), message: Text("Änderungen erfolgreich!"))
         }
