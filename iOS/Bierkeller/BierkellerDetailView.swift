@@ -15,6 +15,7 @@ struct BierkellerDetailView: View {
     @State private var item: BeerCellar?
     @State private var name: String = ""
     @State private var address: String = "NOT IMPLEMENTED"
+    @State private var showAlert = false
     private let client = WebApiClient()
     
     func getItem(id: Int) {
@@ -22,6 +23,16 @@ struct BierkellerDetailView: View {
             self.item = result
             self.name = result.name
         })
+    }
+    
+    func updateItem() {
+        if self.item != nil {
+            self.item?.name = self.name
+            client.putData(additiveUrl: "beercellar/\(self.item!.id)", ofType: BeerCellar.self, callback: { result in
+                self.item = result
+                showAlert = true
+            }, payload: self.item)
+        }
     }
 
     var body: some View {
@@ -79,21 +90,20 @@ struct BierkellerDetailView: View {
             Spacer()
             
         }
+        .padding()
         .navigationBarTitle("Bierkeller Details")
         .navigationBarItems(trailing: Button(action: {
             print("Button pushed!")
-            if self.item != nil {
-                client.putData(additiveUrl: "beercellar/\(self.item!.id)", ofType: BeerCellar.self, callback: { result in
-                    self.item = result
-                }, payload: self.item)
-            }
+            updateItem()
         }) {
             Image(systemName: "checkmark")
                 .foregroundColor(.green)
                 .padding(.trailing, 8)
         })
         .navigationBarTitleDisplayMode(.inline)
-        .padding()
+        .alert(isPresented: $showAlert){
+            Alert(title: Text("Erfolg"), message: Text("Änderungen erfolgreich!"))
+        }
         .onAppear(perform: {
             if self.id != nil {
                 getItem(id: self.id!)
