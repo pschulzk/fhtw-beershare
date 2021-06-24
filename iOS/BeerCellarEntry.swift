@@ -12,5 +12,15 @@ struct BeerCellarEntry: Hashable, Codable {
     var beerCellar: Int?
     var beer: Int
     var amount: Int
-    var beerName: String
+    var beerName: String?
+    
+    init (
+        beerCellar: Int,
+        beer: Int,
+        amount: Int
+    ) {
+        self.beerCellar = beerCellar
+        self.beer = beer
+        self.amount = amount
+    }
 }

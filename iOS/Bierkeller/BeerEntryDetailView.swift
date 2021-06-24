@@ -42,7 +42,6 @@ struct BeerEntryDetailView: View {
             Text("Menge")
                 .font(.caption)
             TextField("Menge", text: $amount)
-                .keyboardType(.numberPad)
                 .padding(8.0)
                 .border(Color.gray)
 
@@ -64,7 +63,7 @@ struct BeerEntryDetailView: View {
         }
         .onAppear(perform: {
             if self.item != nil {
-                self.name = self.item!.beerName
+                self.name = self.item!.beerName ?? "Bier Name"
                 self.amount = String(self.item!.amount)
             }
         })

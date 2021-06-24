@@ -71,7 +71,7 @@ struct BierkellerDetailView: View {
                         ForEach(entries, id: \.self) { item in
                             NavigationLink(destination: BeerEntryDetailView(mode: self.mode, beerCellarId: self.item!.id, item: item)) {
                                 HStack{
-                                    Text(item.beerName)
+                                    Text(item.beerName ?? "Bier name")
                                     Spacer()
                                     Text(String(item.amount))
                                 }

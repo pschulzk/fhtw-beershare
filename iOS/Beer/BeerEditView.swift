@@ -23,7 +23,10 @@ struct BeerEditView: View {
     private var isDisabled: Bool { self.mode != .CREATE }
     private let client = WebApiClient()
     
-    func createItem() {
+    /**
+     Create new beer and create new beerCellarEntry with the result.
+     */
+    func createBeer() {
         if !validate([
             brand,
             type,
@@ -48,6 +51,29 @@ struct BeerEditView: View {
             self.liter = result.liter
             self.country = result.country
 
+            if self.beerCellarId != nil && result.id != nil {
+                let _amount: Int = Int(self.amount) ?? 0
+                updateBeerCellar(beerCellar: self.beerCellarId!, beer: result.id!, amount: _amount)
+            } else {
+                print("Error in BeerEditView: beerCellar.id or beer.id not provided!")
+            }
+        }, payload: payload)
+    }
+    
+    /**
+     Add new beer entry to existing beerCellar.
+     */
+    func updateBeerCellar(
+        beerCellar: Int,
+        beer: Int,
+        amount: Int
+    ) {
+        let payload = BeerCellarEntry(
+            beerCellar: beerCellar,
+            beer: beer,
+            amount: amount
+        )
+        client.postData(additiveUrl: "beercellarentry/", ofType: BeerCellarEntry.self, callback: { result in
             self.showAlert = true
             self.activeAlert = .showSuccess
         }, payload: payload)
@@ -87,7 +113,6 @@ struct BeerEditView: View {
                 Text("Menge")
                     .font(.caption)
                 TextField("Menge", text: $amount)
-                    .keyboardType(.numberPad)
                     .padding(8.0)
                     .border(Color.gray)
             }
@@ -98,7 +123,7 @@ struct BeerEditView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: Button(action: {
             print("Button pushed!")
-            createItem()
+            createBeer()
         }) {
             Image(systemName: "checkmark")
                 .foregroundColor(.green)
