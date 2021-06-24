@@ -119,7 +119,7 @@ struct BeerEditView: View {
             Spacer()
         }
         .padding()
-        .navigationBarTitle("Bier bearbeiten")
+        .navigationBarTitle(self.mode == ViewMode.CREATE ? "Bier erstellen" : "Bier bearbeiten")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: Button(action: {
             print("Button pushed!")
