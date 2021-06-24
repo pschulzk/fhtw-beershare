@@ -14,7 +14,7 @@ struct BierkellerDetailView: View {
 
     @State private var item: BeerCellar?
     @State private var name: String = ""
-    @State private var address: String = "NOT IMPLEMENTED"
+    @State private var address: String = ""
     @State private var showAlert = false
     private let client = WebApiClient()
     
@@ -22,6 +22,7 @@ struct BierkellerDetailView: View {
         client.getData(additiveUrl: "beercellar/\(id)", ofType: BeerCellar.self, callback: { result in
             self.item = result
             self.name = result.name
+            self.address = self.item!.getAddressString()
         })
     }
     
@@ -105,6 +106,7 @@ struct BierkellerDetailView: View {
             Alert(title: Text("Erfolg"), message: Text("Eingabe erfolgreich!"))
         }
         .onAppear(perform: {
+            print("Current View is: BierkellerDetailView")
             print("MODE is: \(self.mode.rawValue)")
             if self.id != nil {
                 getItem(id: self.id!)
