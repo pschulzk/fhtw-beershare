@@ -13,23 +13,20 @@ struct BeerEntryDetailView: View {
     @State var item: BeerCellarEntry?
     
     @State private var name: String = ""
-    @State private var amount: Int = 0
+    @State private var amount: String = "0"
+    @State private var showAlert = false
+    private var isDisabled: Bool { self.mode != .CREATE }
     private let client = WebApiClient()
     
-    let formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    } ()
-    
     func updateItem() {
-        if self.item != nil {
-            self.item!.beerCellar = self.beerCellarId
-            self.item!.beerName = self.name
-            self.item!.amount = self.amount
+        if var payload = self.item {
+            payload.beerCellar = self.beerCellarId
+            print(String(self.amount))
+            payload.amount = Int(self.amount) ?? 0
             client.postData(additiveUrl: "absolutbeercellarentry/", ofType: BeerCellarEntry.self, callback: { result in
                 self.item = result
-            }, payload: self.item)
+                showAlert = true
+            }, payload: payload)
         }
     }
     
@@ -38,18 +35,20 @@ struct BeerEntryDetailView: View {
             Text("Name")
                 .font(.caption)
             TextField("Name", text: $name)
+                .disabled(isDisabled)
                 .padding(8.0)
-                .border(Color.gray)
+                .border(isDisabled ? Color.white : Color.gray)
         
             Text("Menge")
                 .font(.caption)
-            TextField("Menge", value: $amount, formatter: formatter)
+            TextField("Menge", text: $amount)
                 .keyboardType(.numberPad)
                 .padding(8.0)
                 .border(Color.gray)
 
             Spacer()
         }
+        .padding()
         .navigationBarTitle("Bier bearbeiten")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: Button(action: {
@@ -60,11 +59,13 @@ struct BeerEntryDetailView: View {
                 .foregroundColor(.green)
                 .padding(.trailing, 8)
         })
-        .padding()
+        .alert(isPresented: $showAlert){
+            Alert(title: Text("Erfolg"), message: Text("Änderungen erfolgreich!"))
+        }
         .onAppear(perform: {
             if self.item != nil {
                 self.name = self.item!.beerName
-                self.amount = self.item!.amount
+                self.amount = String(self.item!.amount)
             }
         })
     }

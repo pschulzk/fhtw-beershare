@@ -26,12 +26,12 @@ struct BierkellerDetailView: View {
     }
     
     func updateItem() {
-        if self.item != nil {
-            self.item?.name = self.name
+        if var payload = self.item {
+            payload.name = self.name
             client.putData(additiveUrl: "beercellar/\(self.item!.id)", ofType: BeerCellar.self, callback: { result in
                 self.item = result
                 showAlert = true
-            }, payload: self.item)
+            }, payload: payload)
         }
     }
 
@@ -105,6 +105,7 @@ struct BierkellerDetailView: View {
             Alert(title: Text("Erfolg"), message: Text("Änderungen erfolgreich!"))
         }
         .onAppear(perform: {
+            print("MODE is: \(self.mode.rawValue)")
             if self.id != nil {
                 getItem(id: self.id!)
             }
