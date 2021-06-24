@@ -77,7 +77,6 @@
 		83306EE02668F7D7009E6FC8 = {
 			isa = PBXGroup;
 			children = (
-				E80F7AC026839C8A00B78BDA /* BeerEntryDetailView.swift */,
 				E80F7ABA2683702E00B78BDA /* BeerCellarEntry.swift */,
 				E80F7AB826836ABD00B78BDA /* Shared.swift */,
 				E809C1E2267627ED007899B6 /* BeerCellar.swift */,
@@ -139,6 +138,7 @@
 			children = (
 				8346871526692CAB0051C101 /* BierkellerView.swift */,
 				83EC221D26696D4300467F6B /* BierkellerDetailView.swift */,
+				E80F7AC026839C8A00B78BDA /* BeerEntryDetailView.swift */,
 			);
 			path = Bierkeller;
 			sourceTree = "<group>";
@@ -236,7 +236,7 @@
 				E80F7ABB2683702E00B78BDA /* BeerCellarEntry.swift in Sources */,
 				8346872126693F8C0051C101 /* ManagementDetailView.swift in Sources */,
 				8346871426692C5B0051C101 /* OrderManagementView.swift in Sources */,
-				837501752677567800530F9C /* TestMapView.swift in Sources */,
+				837501752677567800530F9C /* BeerSearchView.swift in Sources */,
 				E80F7AB926836ABD00B78BDA /* Shared.swift in Sources */,
 				837501752677567800530F9C /* BeerSearchView.swift in Sources */,
 				83468725266948D20051C101 /* Order.swift in Sources */,
