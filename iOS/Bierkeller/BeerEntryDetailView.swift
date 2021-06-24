@@ -14,7 +14,7 @@ struct BeerEntryDetailView: View {
     
     @State private var name: String = ""
     @State private var amount: String = "0"
-    @State private var showAlert = false
+    @State private var showSuccess = false
     private var isDisabled: Bool { self.mode != .CREATE }
     private let client = WebApiClient()
     
@@ -25,7 +25,7 @@ struct BeerEntryDetailView: View {
             payload.amount = Int(self.amount) ?? 0
             client.postData(additiveUrl: "absolutbeercellarentry/", ofType: BeerCellarEntry.self, callback: { result in
                 self.item = result
-                showAlert = true
+                showSuccess = true
             }, payload: payload)
         }
     }
@@ -59,7 +59,7 @@ struct BeerEntryDetailView: View {
                 .foregroundColor(.green)
                 .padding(.trailing, 8)
         })
-        .alert(isPresented: $showAlert){
+        .alert(isPresented: $showSuccess){
             Alert(title: Text("Erfolg"), message: Text("Änderungen erfolgreich!"))
         }
         .onAppear(perform: {

@@ -12,3 +12,17 @@ enum ViewMode: String {
     case MODIFY = "MODIFY"
     case READONLY = "READONLY"
 }
+
+enum ActiveAlert {
+    case showSuccess, showInvalid
+}
+
+func validate(_ data: [String]) -> Bool {
+    var isValid: Bool = true
+    data.forEach({ i in
+        if i == "" {
+            isValid = false
+        }
+    })
+    return isValid
+}

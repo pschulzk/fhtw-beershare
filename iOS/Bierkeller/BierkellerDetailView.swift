@@ -49,7 +49,7 @@ struct BierkellerDetailView: View {
                     .padding(8.0)
                     .border(Color.gray)
                 
-                NavigationLink(destination: ManagementDetailView()) {
+                NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id)) {
                     Image("AddBeer")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -102,7 +102,7 @@ struct BierkellerDetailView: View {
         })
         .navigationBarTitleDisplayMode(.inline)
         .alert(isPresented: $showAlert){
-            Alert(title: Text("Erfolg"), message: Text("Änderungen erfolgreich!"))
+            Alert(title: Text("Erfolg"), message: Text("Eingabe erfolgreich!"))
         }
         .onAppear(perform: {
             print("MODE is: \(self.mode.rawValue)")
