@@ -23,14 +23,13 @@ enum HttpMethod: String {
 
 public class WebApiClient {
     
-    let BASE_URL = "http://0.0.0.0:8000/api/v1/"
-    let credentials = URLCredential(user: "admin", password: "admin", persistence: .forSession)
+    
 
     /**
      * Generic GET method.
      */
     func getData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void) {
-        let urlString = self.BASE_URL + additiveUrl
+        let urlString = AppState.base_url + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .GET, completionHandler: { data, response, error in
@@ -57,7 +56,7 @@ public class WebApiClient {
      * Generic POST method.
      */
     func postData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void, payload: T? = nil) {
-        let urlString = self.BASE_URL + additiveUrl
+        let urlString = AppState.base_url + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .POST, completionHandler: { data, response, error in
@@ -84,7 +83,7 @@ public class WebApiClient {
      * Generic PUT method.
      */
     func putData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void, payload: T? = nil) {
-        let urlString = self.BASE_URL + additiveUrl
+        let urlString = AppState.base_url + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .PUT, completionHandler: { data, response, error in
@@ -111,7 +110,7 @@ public class WebApiClient {
      * Generic DELETE method.
      */
     func deleteData(additiveUrl: String, callback: @escaping () -> Void) {
-        let urlString = self.BASE_URL + additiveUrl
+        let urlString = AppState.base_url + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .DELETE, completionHandler: { data, response, error in
@@ -178,7 +177,7 @@ public class WebApiClient {
      * Initialize authorized session for user with credentials.
      */
     private func makeSession() -> URLSession {
-        let loginString = String(format: "%@:%@", credentials.user!, credentials.password!)
+        let loginString = String(format: "%@:%@", AppState.credentials.user!, AppState.credentials.password!)
         let loginData = loginString.data(using: String.Encoding.utf8)!
         let base64LoginString = loginData.base64EncodedString()
         let sessionConfiguration = URLSessionConfiguration.default

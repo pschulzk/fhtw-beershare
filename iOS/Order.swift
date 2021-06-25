@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Order: Identifiable, Codable {
+struct Order: Hashable, Codable {
     var id: Int?
     var amount: Int
     var status: Int

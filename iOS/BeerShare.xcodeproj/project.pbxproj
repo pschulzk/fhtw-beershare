@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		832CEC3A266E8032002CE2F5 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832CEC39266E8032002CE2F5 /* OrderView.swift */; };
 		83306EED2668F7D7009E6FC8 /* BeerShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83306EEC2668F7D7009E6FC8 /* BeerShareApp.swift */; };
 		83306EEF2668F7D7009E6FC8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83306EEE2668F7D7009E6FC8 /* MainView.swift */; };
 		83306EF12668F7D9009E6FC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83306EF02668F7D9009E6FC8 /* Assets.xcassets */; };
@@ -33,7 +32,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		832CEC39266E8032002CE2F5 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		83306EE92668F7D7009E6FC8 /* BeerShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeerShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83306EEC2668F7D7009E6FC8 /* BeerShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerShareApp.swift; sourceTree = "<group>"; };
 		83306EEE2668F7D7009E6FC8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -151,7 +149,6 @@
 		83468719266931020051C101 /* OrderManagement */ = {
 			isa = PBXGroup;
 			children = (
-				832CEC39266E8032002CE2F5 /* OrderView.swift */,
 				8346871326692C5B0051C101 /* OrderManagementView.swift */,
 				8346872026693F8C0051C101 /* ManagementDetailView.swift */,
 			);
@@ -260,7 +257,6 @@
 				83DF103426752BD0001C708B /* Beer.swift in Sources */,
 				E809C1E1267627B2007899B6 /* Address.swift in Sources */,
 				83306EEF2668F7D7009E6FC8 /* MainView.swift in Sources */,
-				832CEC3A266E8032002CE2F5 /* OrderView.swift in Sources */,
 				E809C1E3267627ED007899B6 /* BeerCellar.swift in Sources */,
 				83468723266941120051C101 /* Package.swift in Sources */,
 				83306EED2668F7D7009E6FC8 /* BeerShareApp.swift in Sources */,

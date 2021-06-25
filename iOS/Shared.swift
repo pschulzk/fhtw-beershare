@@ -7,12 +7,28 @@
 
 import Foundation
 
-enum OrderStatus: Int {
+struct AppState {
+    static var base_url = "http://0.0.0.0:8000/api/v1/"
+    static var credentials = URLCredential(user: "admin", password: "admin", persistence: .forSession)
+}
+
+enum OrderType {
+    case OWN
+    case OTHER
+}
+enum OrderStatusInt: Int {
     case PLACED = 1
     case ACCEPTED = 2
     case DECLINED = 3
     case DONE = 4
 }
+let OrderStatusString: [String] = [
+    "NO_VALUE",
+    "Neu",
+    "Akzeptiert",
+    "Abgelehnt",
+    "Erledigt"
+]
 
 enum ViewMode: String {
     case CREATE = "CREATE"

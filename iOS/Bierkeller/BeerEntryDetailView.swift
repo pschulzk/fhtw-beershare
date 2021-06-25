@@ -33,7 +33,7 @@ struct BeerEntryDetailView: View {
     func orderBeer() {
         let payload = Order(
             amount: Int(self.amount) ?? 0,
-            status: OrderStatus.PLACED.rawValue,
+            status: OrderStatusInt.PLACED.rawValue,
             beerCellar: self.beerCellarId!,
             beer: self.item!.beer
         )
