@@ -9,23 +9,39 @@ import SwiftUI
 
 struct BierkellerDetailView: View {
 
-    @State var mode: ViewMode
-    @State var id: Int?
+    @State public var mode: ViewMode
+    @State public var id: Int?
 
-    @State private var item: BeerCellar?
+    @State private var item: BeerCellar
     @State private var name: String = ""
-    @State private var address: String = ""
+    @State private var address = ""
 
     @State private var showAlert = false
     @State private var activeAlert: ActiveAlert = .showSuccess
     private var isDisabled: Bool { self.mode == .READONLY }
     private let client = WebApiClient()
     
+    init(mode: ViewMode, id: Int? = nil) {
+        self.mode = mode
+        self.id = id
+        self.item = BeerCellar(
+            name: "",
+            latitude: 0.0,
+            longitude: 0.0,
+            address: Address(
+                address: "",
+                zipCode: "",
+                city: "",
+                country: ""
+            )
+        )
+    }
+    
     func getItem(id: Int) {
         client.getData(additiveUrl: "beercellar/\(id)", ofType: BeerCellar.self, callback: { result in
             self.item = result
             self.name = result.name
-            self.address = self.item!.getAddressString()
+            self.address = result.getAddressString()
         })
     }
     
@@ -41,12 +57,7 @@ struct BierkellerDetailView: View {
             name: self.name,
             latitude: 0.0,
             longitude: 0.0,
-            address: Address(
-                address: "ttt",
-                zipCode: "ttt",
-                city: "ttt",
-                country: "ttt"
-            )
+            address: self.item.address
         )
         client.postData(additiveUrl: "beercellar/", ofType: BeerCellar.self, callback: { result in
             self.item = result
@@ -57,13 +68,21 @@ struct BierkellerDetailView: View {
     }
     
     func updateBeerCellar() {
-        if var payload = self.item {
-            payload.name = self.name
-            client.putData(additiveUrl: "beercellar/\(self.item!.id!)", ofType: BeerCellar.self, callback: { result in
-                self.item = result
-                showAlert = true
-            }, payload: payload)
-        }
+        var payload = self.item
+        payload.name = self.name
+        payload.address = self.item.address
+        client.putData(additiveUrl: "beercellar/\(self.item.id!)", ofType: BeerCellar.self, callback: { result in
+            self.item = result
+            self.name = self.item.name
+            self.address = self.item.getAddressString()
+            print(self.item.getAddressString())
+            showAlert = true
+        }, payload: payload)
+    }
+    
+    func callBack(_ addressData: Address) {
+        self.item.address = addressData
+        updateBeerCellar()
     }
 
     var body: some View {
@@ -76,14 +95,20 @@ struct BierkellerDetailView: View {
                     .padding(8.0)
                     .border(isDisabled ? Color.white : Color.gray)
 
-                Text("Adresse")
-                    .font(.caption)
-                TextField("Adresse", text: $address)
-                    .disabled(isDisabled)
-                    .padding(8.0)
-                    .border(isDisabled ? Color.white : Color.gray)
+                NavigationLink(destination: AddressEditView(addressData: self.item.address, callBack: callBack)) {
+                    VStack(alignment: .leading) {
+                        Text("Adresse")
+                            .font(.caption)
+                            .foregroundColor(.black)
+                        Text("\(self.address)")
+                            .padding(4.0)
+                            .foregroundColor(.black)
+                        Text("bearbeiten")
+                            .font(.caption2)
+                    }
+                }
                 
-                if self.mode != .READONLY && self.item?.id != nil {
+                if self.mode != .READONLY && self.item.id != nil {
                     NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id)) {
                         Image("AddBeer")
                             .resizable()
@@ -102,10 +127,10 @@ struct BierkellerDetailView: View {
                 .padding([.top, .leading, .trailing])
                 Divider()
 
-                if let entries = self.item?.entries {
+                if let entries = self.item.entries {
                     List{
                         ForEach(entries, id: \.self) { item in
-                            NavigationLink(destination: BeerEntryDetailView(mode: self.mode, beerCellarId: self.item!.id, item: item)) {
+                            NavigationLink(destination: BeerEntryDetailView(mode: self.mode, beerCellarId: self.item.id, item: item)) {
                                 HStack{
                                     Text(item.beerName ?? "Bier Name")
                                     Spacer()
@@ -161,6 +186,6 @@ struct BierkellerDetailView: View {
 
 struct BierkellerDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        BierkellerDetailView(mode: ViewMode.CREATE, id: 3)
+        BierkellerDetailView(mode: ViewMode.CREATE)
     }
 }

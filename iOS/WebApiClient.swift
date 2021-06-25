@@ -24,7 +24,7 @@ enum HttpMethod: String {
 public class WebApiClient {
     
     let BASE_URL = "http://0.0.0.0:8000/api/v1/"
-    let credentials = URLCredential(user: "andreas", password: "andreas", persistence: .forSession)
+    let credentials = URLCredential(user: "admin", password: "admin", persistence: .forSession)
 
     /**
      * Generic GET method.
