@@ -39,14 +39,16 @@ struct BeerSearchView: View {
                 
         }
       }
-      .onAppear(perform: {client.getData(additiveUrl: "beercellar", ofType: [BeerCellar].self, callback: {
+      .onAppear(perform: {
+        client.getData(additiveUrl: "nearbybeercellar", ofType: [BeerCellar].self, callback: {
             result in
             self.locations = result
-            })
-      for element in self.locations{
-        print("\(element.address)\n")
-      }
+            
+            for element in self.locations{
+                print("\(element.address)\n")
+            }
         })
+      })
     }
 }
 

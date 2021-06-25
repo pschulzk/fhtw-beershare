@@ -9,12 +9,24 @@ import Foundation
 
 struct BeerCellar: Identifiable, Codable {
     
-    var id: Int
+    var id: Int?
     var name: String
     var latitude, longitude: Double
     var address: Address
-    var owner: String
+    var owner: String?
     var entries: [BeerCellarEntry]?
+    
+    init(
+        name: String,
+        latitude: Double,
+        longitude: Double,
+        address: Address
+    ) {
+        self.name = name
+        self.latitude = latitude
+        self.longitude = longitude
+        self.address = address
+    }
     
     func getAddressString() -> String {
         print(self.address.address)

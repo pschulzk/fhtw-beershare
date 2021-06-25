@@ -22,12 +22,11 @@ struct BierkellerView: View {
     var body: some View {
         VStack {
             VStack {
-                NavigationLink(destination: ManagementDetailView()) {
+                NavigationLink(destination: BierkellerDetailView(mode: .CREATE)) {
                     Image("AddKeller")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .cornerRadius(5)
-
                 }
                 .padding(.horizontal, 50.0)
                 .padding(.vertical, 20.0)
@@ -46,8 +45,6 @@ struct BierkellerView: View {
                         self.items = result
                     })
                 })
-                
-
             }
             .navigationBarTitle("Meine Bierkeller")
             .navigationBarTitleDisplayMode(.inline)

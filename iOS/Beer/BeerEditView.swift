@@ -22,6 +22,7 @@ struct BeerEditView: View {
     @State private var activeAlert: ActiveAlert = .showSuccess
     private var isDisabled: Bool { self.mode != .CREATE }
     private let client = WebApiClient()
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     /**
      Create new beer and create new beerCellarEntry with the result.
@@ -33,8 +34,7 @@ struct BeerEditView: View {
             liter,
             country
         ]) {
-            self.showAlert = true
-            self.activeAlert = .showInvalid
+            alertInvalid()
             return
         }
         
@@ -50,13 +50,23 @@ struct BeerEditView: View {
             self.type = result.type
             self.liter = result.liter
             self.country = result.country
-
-            if self.beerCellarId != nil && result.id != nil {
-                let _amount: Int = Int(self.amount) ?? 0
-                updateBeerCellar(beerCellar: self.beerCellarId!, beer: result.id!, amount: _amount)
-            } else {
-                print("Error in BeerEditView: beerCellar.id or beer.id not provided!")
+            
+            guard let _beerCellarId: Int = self.beerCellarId else {
+                print("Error in BeerEditView: beerCellar.id not provided!")
+                alertInvalid()
+                return
             }
+            guard let _beerId: Int = result.id else {
+                print("Error in BeerEditView: beer.id not provided!")
+                alertInvalid()
+                return
+            }
+            guard let _amount: Int = Int(self.amount) else {
+                print("Error in BeerEditView: amount not provided!")
+                alertInvalid()
+                return
+            }
+            updateBeerCellar(beerCellar: _beerCellarId, beer: _beerId, amount: _amount)
         }, payload: payload)
     }
     
@@ -74,9 +84,13 @@ struct BeerEditView: View {
             amount: amount
         )
         client.postData(additiveUrl: "beercellarentry/", ofType: BeerCellarEntry.self, callback: { result in
-            self.showAlert = true
-            self.activeAlert = .showSuccess
+            presentationMode.wrappedValue.dismiss()
         }, payload: payload)
+    }
+    
+    func alertInvalid() {
+        self.showAlert = true
+        self.activeAlert = .showInvalid
     }
     
     var body: some View {

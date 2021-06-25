@@ -15,7 +15,9 @@ struct BierkellerDetailView: View {
     @State private var item: BeerCellar?
     @State private var name: String = ""
     @State private var address: String = ""
+
     @State private var showAlert = false
+    @State private var activeAlert: ActiveAlert = .showSuccess
     private var isDisabled: Bool { self.mode == .READONLY }
     private let client = WebApiClient()
     
@@ -27,10 +29,37 @@ struct BierkellerDetailView: View {
         })
     }
     
-    func updateItem() {
+    func createBeerCellar() {
+        if !validate([
+            name
+        ]) {
+            self.showAlert = true
+            self.activeAlert = .showInvalid
+            return
+        }
+        let payload = BeerCellar(
+            name: self.name,
+            latitude: 0.0,
+            longitude: 0.0,
+            address: Address(
+                address: "ttt",
+                zipCode: "ttt",
+                city: "ttt",
+                country: "ttt"
+            )
+        )
+        client.postData(additiveUrl: "beercellar/", ofType: BeerCellar.self, callback: { result in
+            self.item = result
+            self.id = result.id
+            showAlert = true
+            self.activeAlert = .showSuccess
+        }, payload: payload)
+    }
+    
+    func updateBeerCellar() {
         if var payload = self.item {
             payload.name = self.name
-            client.putData(additiveUrl: "beercellar/\(self.item!.id)", ofType: BeerCellar.self, callback: { result in
+            client.putData(additiveUrl: "beercellar/\(self.item!.id!)", ofType: BeerCellar.self, callback: { result in
                 self.item = result
                 showAlert = true
             }, payload: payload)
@@ -54,7 +83,7 @@ struct BierkellerDetailView: View {
                     .padding(8.0)
                     .border(isDisabled ? Color.white : Color.gray)
                 
-                if !isDisabled {
+                if self.item?.id != nil {
                     NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id)) {
                         Image("AddBeer")
                             .resizable()
@@ -78,7 +107,7 @@ struct BierkellerDetailView: View {
                         ForEach(entries, id: \.self) { item in
                             NavigationLink(destination: BeerEntryDetailView(mode: self.mode, beerCellarId: self.item!.id, item: item)) {
                                 HStack{
-                                    Text(item.beerName ?? "Bier name")
+                                    Text(item.beerName ?? "Bier Name")
                                     Spacer()
                                     Text(String(item.amount))
                                 }
@@ -87,9 +116,8 @@ struct BierkellerDetailView: View {
                     }
                     .listStyle(PlainListStyle())
                 } else {
-                    VStack{
+                    VStack(alignment: .center) {
                         Text("Keine Biere enthalten.")
-                        Spacer()
                     }
                 }
 
@@ -101,7 +129,11 @@ struct BierkellerDetailView: View {
         .navigationBarTitle("Bierkeller Details")
         .navigationBarItems(trailing: !isDisabled ? Button(action: {
             print("Button pushed!")
-            updateItem()
+            if self.mode == .CREATE {
+                createBeerCellar()
+            } else {
+                updateBeerCellar()
+            }
         }) {
             Image(systemName: "checkmark")
                 .foregroundColor(.green)
@@ -109,7 +141,12 @@ struct BierkellerDetailView: View {
             } : nil)
         .navigationBarTitleDisplayMode(.inline)
         .alert(isPresented: $showAlert){
-            Alert(title: Text("Erfolg"), message: Text("Eingabe erfolgreich!"))
+            switch activeAlert {
+                case .showInvalid:
+                    return Alert(title: Text("Ungültig"), message: Text("Bitte Eingabefelder korrigieren!"))
+                case .showSuccess:
+                    return Alert(title: Text("Erfolg"), message: Text("Eingabe erfolgreich!"))
+            }
         }
         .onAppear(perform: {
             print("Current View is: BierkellerDetailView")

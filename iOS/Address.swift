@@ -8,14 +8,25 @@
 import Foundation
 
 // MARK: - Address
-struct Address: Identifiable, Codable {
-    let id = UUID()
+struct Address: Hashable, Codable {
     var address, zipCode, city, country: String
 
     enum CodingKeys: String, CodingKey {
         case address
         case zipCode = "zip_code"
         case city, country
+    }
+    
+    init(
+        address: String,
+        zipCode: String,
+        city: String,
+        country: String
+    ) {
+        self.address = address
+        self.zipCode = zipCode
+        self.city = city
+        self.country = country
     }
 
 }
