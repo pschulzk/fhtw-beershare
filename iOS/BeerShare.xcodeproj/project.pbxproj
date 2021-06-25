@@ -131,7 +131,6 @@
 			isa = PBXGroup;
 			children = (
 				837501742677567800530F9C /* BeerSearchView.swift */,
-				832CEC39266E8032002CE2F5 /* OrderView.swift */,
 			);
 			path = BeerSearch;
 			sourceTree = "<group>";
@@ -149,6 +148,7 @@
 		83468719266931020051C101 /* OrderManagement */ = {
 			isa = PBXGroup;
 			children = (
+				832CEC39266E8032002CE2F5 /* OrderView.swift */,
 				8346871326692C5B0051C101 /* OrderManagementView.swift */,
 				8346872026693F8C0051C101 /* ManagementDetailView.swift */,
 			);

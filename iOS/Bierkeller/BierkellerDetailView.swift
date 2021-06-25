@@ -83,7 +83,7 @@ struct BierkellerDetailView: View {
                     .padding(8.0)
                     .border(isDisabled ? Color.white : Color.gray)
                 
-                if self.item?.id != nil {
+                if self.mode != .READONLY && self.item?.id != nil {
                     NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id)) {
                         Image("AddBeer")
                             .resizable()
@@ -126,7 +126,7 @@ struct BierkellerDetailView: View {
             
         }
         .padding()
-        .navigationBarTitle("Bierkeller Details")
+        .navigationBarTitle(self.mode == .CREATE ? "Bierkeller erstellen" : "Bierkeller Details")
         .navigationBarItems(trailing: !isDisabled ? Button(action: {
             print("Button pushed!")
             if self.mode == .CREATE {
