@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct BierkellerDetailView: View {
 
     @State public var mode: ViewMode
-    @State public var id: Int?
+    @State private var id: Int?
 
     @State private var item: BeerCellar
     @State private var name: String = ""
@@ -41,7 +42,7 @@ struct BierkellerDetailView: View {
         client.getData(additiveUrl: "beercellar/\(id)", ofType: BeerCellar.self, callback: { result in
             self.item = result
             self.name = result.name
-            self.address = result.getAddressString()
+            self.address = result.getAddressLabel()
         })
     }
     
@@ -60,8 +61,10 @@ struct BierkellerDetailView: View {
             address: self.item.address
         )
         client.postData(additiveUrl: "beercellar/", ofType: BeerCellar.self, callback: { result in
-            self.item = result
             self.id = result.id
+            self.item = result
+            self.name = self.item.name
+            self.address = self.item.getAddressLabel()
             showAlert = true
             self.activeAlert = .showSuccess
         }, payload: payload)
@@ -74,15 +77,42 @@ struct BierkellerDetailView: View {
         client.putData(additiveUrl: "beercellar/\(self.item.id!)", ofType: BeerCellar.self, callback: { result in
             self.item = result
             self.name = self.item.name
-            self.address = self.item.getAddressString()
-            print(self.item.getAddressString())
+            self.address = self.item.getAddressLabel()
             showAlert = true
         }, payload: payload)
     }
     
     func callBack(_ addressData: Address) {
         self.item.address = addressData
-        updateBeerCellar()
+
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(self.item.getAddressString()) { (placemarks, error) in
+            guard let placemarks = placemarks else {
+                // handle no location found
+                print("no placemarks found!!!")
+                print(error.debugDescription)
+                return
+            }
+            guard let location = placemarks.first?.location else {
+                // handle no location found
+                print("no location found!!!")
+                print(error.debugDescription)
+                return
+            }
+
+            print(location.coordinate.latitude)
+            self.item.latitude = location.coordinate.latitude
+            print(location.coordinate.longitude)
+            self.item.longitude = location.coordinate.longitude
+
+            if self.item.id != nil {
+                print("CALL updateBeerCellar()")
+                updateBeerCellar()
+            } else {
+                print("CALL createBeerCellar()")
+                createBeerCellar()
+            }
+        }
     }
 
     var body: some View {
@@ -95,7 +125,7 @@ struct BierkellerDetailView: View {
                     .padding(8.0)
                     .border(isDisabled ? Color.white : Color.gray)
 
-                NavigationLink(destination: AddressEditView(addressData: self.item.address, callBack: callBack)) {
+                NavigationLink(destination: AddressEditView(addressData: Address(address: self.item.address.address, zipCode: self.item.address.zipCode, city: self.item.address.city, country: self.item.address.city), callBack: callBack)) {
                     VStack(alignment: .leading) {
                         Text("Adresse")
                             .font(.caption)

@@ -28,9 +28,12 @@ struct BeerCellar: Identifiable, Codable {
         self.address = address
     }
     
-    func getAddressString() -> String {
-        print(self.address.address)
+    func getAddressLabel() -> String {
         return "\(self.address.address), \(self.address.zipCode) \(self.address.city), \(self.address.country)"
+    }
+    
+    func getAddressString() -> String {
+        return "\(self.address.country), \(self.address.city), \(self.address.address)"
     }
 
 }
