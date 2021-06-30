@@ -12,6 +12,8 @@ struct ManagementDetailView: View {
     @State var orderType: OrderType
     @State var order: Order
     var callBack: (_ orderData: Order) -> Void
+    
+    private var isOwn: Bool { self.orderType == OrderType.OWN }
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     func save() {
@@ -30,29 +32,41 @@ struct ManagementDetailView: View {
                     Text(OrderStatusString[self.order.status])
                 }.padding(20)
                 HStack{
-                    Button(action: {
-                        self.order.status = OrderStatusInt.ACCEPTED.rawValue
-                        save()
-                    }) {
-                        Image("Akzeptieren")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .cornerRadius(5)
+                    if isOwn {
+                        Button(action: {
+                            self.order.status = OrderStatusInt.ACCEPTED.rawValue
+                            save()
+                        }) {
+                            Image("Akzeptieren")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(5)
+                        }
+                    } else {
+                        Button(action: {
+                            self.order.status = OrderStatusInt.ACCEPTED.rawValue
+                            save()
+                        }) {
+                            Image("Akzeptieren")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(5)
 
-                    }
-                    
-                    Button(action: {
-                        self.order.status = OrderStatusInt.DECLINED.rawValue
-                        save()
-                    }) {
-                        Image("Ablehnen")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .cornerRadius(5)
+                        }
+                        
+                        Button(action: {
+                            self.order.status = OrderStatusInt.DECLINED.rawValue
+                            save()
+                        }) {
+                            Image("Ablehnen")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(5)
+                        }
                     }
                     
                 }
-                .navigationBarTitle( orderType == OrderType.OWN ? "Ausgehende Bestellung" : "Eingehende Bestellung" )
+                .navigationBarTitle( self.isOwn ? "Ausgehende Bestellung" : "Eingehende Bestellung" )
                 .navigationBarTitleDisplayMode(.inline)
                 .padding()
                 Spacer()

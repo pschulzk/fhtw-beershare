@@ -7,9 +7,20 @@
 
 import Foundation
 
-struct AppState {
-    static var base_url = "http://0.0.0.0:8000/api/v1/"
-    static var credentials = URLCredential(user: "admin", password: "admin", persistence: .forSession)
+let BASE_URL = "http://0.0.0.0:8000/api/v1/"
+
+class AppState : ObservableObject {
+    // @Published var base_url = "http://0.0.0.0:8000/api/v1/"
+    @Published var credentials: URLCredential
+    @Published var loggedIn: Bool
+    var client: WebApiClient
+    
+    init() {
+        self.loggedIn = false
+        let _credentials = URLCredential(user: "andreas", password: "andreas", persistence: .forSession)
+        self.credentials = _credentials
+        self.client = WebApiClient(credentials: _credentials)
+    }
 }
 
 enum OrderType {

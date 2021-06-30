@@ -23,13 +23,17 @@ enum HttpMethod: String {
 
 public class WebApiClient {
     
+    private var credentials: URLCredential
     
+    init(credentials: URLCredential) {
+        self.credentials = credentials
+    }
 
     /**
      * Generic GET method.
      */
     func getData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void) {
-        let urlString = AppState.base_url + additiveUrl
+        let urlString = BASE_URL + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .GET, completionHandler: { data, response, error in
@@ -56,7 +60,7 @@ public class WebApiClient {
      * Generic POST method.
      */
     func postData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void, payload: T? = nil) {
-        let urlString = AppState.base_url + additiveUrl
+        let urlString = BASE_URL + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .POST, completionHandler: { data, response, error in
@@ -83,7 +87,7 @@ public class WebApiClient {
      * Generic PUT method.
      */
     func putData<T : Codable>(additiveUrl: String, ofType: T.Type, callback: @escaping (_ response: T) -> Void, payload: T? = nil) {
-        let urlString = AppState.base_url + additiveUrl
+        let urlString = BASE_URL + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .PUT, completionHandler: { data, response, error in
@@ -110,7 +114,7 @@ public class WebApiClient {
      * Generic DELETE method.
      */
     func deleteData(additiveUrl: String, callback: @escaping () -> Void) {
-        let urlString = AppState.base_url + additiveUrl
+        let urlString = BASE_URL + additiveUrl
 
         do {
             try makeRequest(urlString: urlString, method: .DELETE, completionHandler: { data, response, error in
@@ -135,8 +139,9 @@ public class WebApiClient {
             "Accept": "application/json"
         ]
         
-        let task = makeSession().dataTask(with: request, completionHandler: completionHandler)
-        task.resume()
+        if let task = try?makeSession().dataTask(with: request, completionHandler: completionHandler) {
+            task.resume()
+        }
     }
     
     /**
@@ -164,11 +169,13 @@ public class WebApiClient {
                 throw NSError(domain: "JSON format error", code: 904, userInfo: ["Malformed JSON in object of class": String(describing: T.self)] )
             }
             print(jsonData)
-            let task = makeSession().uploadTask(with: request, from: jsonData, completionHandler: completionHandler)
-            task.resume()
+            if let task = try?makeSession().uploadTask(with: request, from: jsonData, completionHandler: completionHandler) {
+                task.resume()
+            }
         } else {
-            let task = makeSession().dataTask(with: request, completionHandler: completionHandler)
-            task.resume()
+            if let task = try?makeSession().dataTask(with: request, completionHandler: completionHandler) {
+                task.resume()
+            }
         }
         
     }
@@ -176,8 +183,14 @@ public class WebApiClient {
     /**
      * Initialize authorized session for user with credentials.
      */
-    private func makeSession() -> URLSession {
-        let loginString = String(format: "%@:%@", AppState.credentials.user!, AppState.credentials.password!)
+    private func makeSession() throws -> URLSession {
+        guard let _user: String = credentials.user else {
+            throw NSError(domain: "Credentials", code: 909, userInfo: ["Invalid user authentication data.": "user"] )
+        }
+        guard let _password: String = credentials.password else {
+            throw NSError(domain: "Credentials", code: 909, userInfo: ["Invalid user authentication data.": "password"] )
+        }
+        let loginString = String(format: "%@:%@", _user, _password)
         let loginData = loginString.data(using: String.Encoding.utf8)!
         let base64LoginString = loginData.base64EncodedString()
         let sessionConfiguration = URLSessionConfiguration.default

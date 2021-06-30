@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BeerEntryDetailView: View {
+    @EnvironmentObject var appState: AppState
     var mode: ViewMode
     var beerCellarId: Int?
     @State var item: BeerCellarEntry?
@@ -16,14 +17,14 @@ struct BeerEntryDetailView: View {
     @State private var amount: String = "0"
     @State private var showSuccess = false
     private var isDisabled: Bool { self.mode == .READONLY }
-    private let client = WebApiClient()
+    // private let client = WebApiClient()
     
     func updateItem() {
         if var payload = self.item {
             payload.beerCellar = self.beerCellarId
             print(String(self.amount))
             payload.amount = Int(self.amount) ?? 0
-            client.postData(additiveUrl: "absolutbeercellarentry/", ofType: BeerCellarEntry.self, callback: { result in
+            appState.client.postData(additiveUrl: "absolutbeercellarentry/", ofType: BeerCellarEntry.self, callback: { result in
                 self.item = result
                 showSuccess = true
             }, payload: payload)
@@ -37,7 +38,7 @@ struct BeerEntryDetailView: View {
             beerCellar: self.beerCellarId!,
             beer: self.item!.beer
         )
-        client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
+        appState.client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
             showSuccess = true
         }, payload: payload)
     }

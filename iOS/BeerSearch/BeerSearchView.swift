@@ -9,11 +9,12 @@ import SwiftUI
 import MapKit
 
 struct BeerSearchView: View {
-    var client = WebApiClient()
+    @EnvironmentObject var appState: AppState
+    // var client = WebApiClient()
     @State private var locations: [BeerCellar] = []
     @State private var coordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 48.20849, longitude: 16.37298),
-        span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     )
 
     var body: some View {
@@ -26,7 +27,7 @@ struct BeerSearchView: View {
             latitude: location.latitude,
             longitude: location.longitude)
         ) {
-            NavigationLink(destination: BierkellerDetailView(mode: ViewMode.READONLY, id: location.id)){
+            NavigationLink(destination: BierkellerDetailView(mode: ViewMode.READONLY, id: location.id).environmentObject(appState)){
                 VStack{
                     Text(location.name)
                       .font(.caption2)
@@ -40,7 +41,7 @@ struct BeerSearchView: View {
         }
       }
       .onAppear(perform: {
-        client.getData(additiveUrl: "nearbybeercellar", ofType: [BeerCellar].self, callback: {
+        appState.client.getData(additiveUrl: "nearbybeercellar?latitude=\(coordinateRegion.center.latitude)&longitude=\(coordinateRegion.center.longitude)&distance=10", ofType: [BeerCellar].self, callback: {
             result in
             self.locations = result
             

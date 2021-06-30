@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BeerEditView: View {
+    @EnvironmentObject var appState: AppState
     var mode: ViewMode
     var beerCellarId: Int?
 
@@ -21,7 +22,7 @@ struct BeerEditView: View {
     @State private var showAlert = false
     @State private var activeAlert: ActiveAlert = .showSuccess
     private var isDisabled: Bool { self.mode != .CREATE }
-    private let client = WebApiClient()
+    // private let client = WebApiClient()
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     /**
@@ -45,7 +46,7 @@ struct BeerEditView: View {
             country: self.country
         )
 
-        client.postData(additiveUrl: "beer/", ofType: Beer.self, callback: { result in
+        appState.client.postData(additiveUrl: "beer/", ofType: Beer.self, callback: { result in
             self.brand = result.brand
             self.type = result.type
             self.liter = result.liter
@@ -83,7 +84,7 @@ struct BeerEditView: View {
             beer: beer,
             amount: amount
         )
-        client.postData(additiveUrl: "beercellarentry/", ofType: BeerCellarEntry.self, callback: { result in
+        appState.client.postData(additiveUrl: "beercellarentry/", ofType: BeerCellarEntry.self, callback: { result in
             presentationMode.wrappedValue.dismiss()
         }, payload: payload)
     }

@@ -8,21 +8,27 @@
 import SwiftUI
 
 struct BierkellerView: View {
-    
+    @EnvironmentObject var appState: AppState
     var mode: ViewMode
     var id: Int?
 
     @State private var items = [BeerCellar]()
-    private var client = WebApiClient()
+    // private var client = WebApiClient()
     
     init(mode: ViewMode) {
         self.mode = mode
     }
     
+    private func getData() {
+        appState.client.getData(additiveUrl: "beercellar", ofType: [BeerCellar].self, callback: { result in
+            self.items = result
+        })
+    }
+    
     var body: some View {
         VStack {
             VStack {
-                NavigationLink(destination: BierkellerDetailView(mode: .CREATE)) {
+                NavigationLink(destination: BierkellerDetailView(mode: .CREATE).environmentObject(appState)) {
                     Image("AddKeller")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -34,16 +40,14 @@ struct BierkellerView: View {
                 List {
                     ForEach(items, id: \.id) { item in
                         VStack(alignment: .leading) {
-                            NavigationLink(destination: BierkellerDetailView(mode: self.mode, id: item.id)) {
+                            NavigationLink(destination: BierkellerDetailView(mode: self.mode, id: item.id).environmentObject(appState)) {
                                 Text(item.name)
                             }
                         }
                     }
                 }
                 .onAppear(perform: {
-                    client.getData(additiveUrl: "beercellar", ofType: [BeerCellar].self, callback: { result in
-                        self.items = result
-                    })
+                    getData()
                 })
             }
             .navigationBarTitle("Meine Bierkeller")

@@ -9,7 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct BierkellerDetailView: View {
-
+    @EnvironmentObject var appState: AppState
     @State public var mode: ViewMode
     @State private var id: Int?
 
@@ -20,7 +20,7 @@ struct BierkellerDetailView: View {
     @State private var showAlert = false
     @State private var activeAlert: ActiveAlert = .showSuccess
     private var isDisabled: Bool { self.mode == .READONLY }
-    private let client = WebApiClient()
+    // private let client = WebApiClient()
     
     init(mode: ViewMode, id: Int? = nil) {
         self.mode = mode
@@ -39,7 +39,7 @@ struct BierkellerDetailView: View {
     }
     
     func getItem(id: Int) {
-        client.getData(additiveUrl: "beercellar/\(id)", ofType: BeerCellar.self, callback: { result in
+        appState.client.getData(additiveUrl: "beercellar/\(id)", ofType: BeerCellar.self, callback: { result in
             self.item = result
             self.name = result.name
             self.address = result.getAddressLabel()
@@ -60,7 +60,7 @@ struct BierkellerDetailView: View {
             longitude: 0.0,
             address: self.item.address
         )
-        client.postData(additiveUrl: "beercellar/", ofType: BeerCellar.self, callback: { result in
+        appState.client.postData(additiveUrl: "beercellar/", ofType: BeerCellar.self, callback: { result in
             self.id = result.id
             self.item = result
             self.name = self.item.name
@@ -74,7 +74,7 @@ struct BierkellerDetailView: View {
         var payload = self.item
         payload.name = self.name
         payload.address = self.item.address
-        client.putData(additiveUrl: "beercellar/\(self.item.id!)", ofType: BeerCellar.self, callback: { result in
+        appState.client.putData(additiveUrl: "beercellar/\(self.item.id!)", ofType: BeerCellar.self, callback: { result in
             self.item = result
             self.name = self.item.name
             self.address = self.item.getAddressLabel()
@@ -125,7 +125,11 @@ struct BierkellerDetailView: View {
                     .padding(8.0)
                     .border(isDisabled ? Color.white : Color.gray)
 
-                NavigationLink(destination: AddressEditView(addressData: Address(address: self.item.address.address, zipCode: self.item.address.zipCode, city: self.item.address.city, country: self.item.address.city), callBack: callBack)) {
+                NavigationLink(destination: AddressEditView(
+                                addressData: Address(address: self.item.address.address, zipCode: self.item.address.zipCode, city: self.item.address.city, country: self.item.address.city),
+                                callBack: callBack
+                    ).environmentObject(appState)
+                ) {
                     VStack(alignment: .leading) {
                         Text("Adresse")
                             .font(.caption)
