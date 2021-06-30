@@ -10,7 +10,6 @@ import Foundation
 let BASE_URL = "http://0.0.0.0:8000/api/v1/"
 
 class AppState : ObservableObject {
-    // @Published var base_url = "http://0.0.0.0:8000/api/v1/"
     @Published var credentials: URLCredential
     @Published var loggedIn: Bool = false
     var client: WebApiClient

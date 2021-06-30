@@ -88,13 +88,11 @@ struct BierkellerDetailView: View {
         geoCoder.geocodeAddressString(self.item.getAddressString()) { (placemarks, error) in
             guard let placemarks = placemarks else {
                 // handle no location found
-                print("no placemarks found!!!")
                 print(error.debugDescription)
                 return
             }
             guard let location = placemarks.first?.location else {
                 // handle no location found
-                print("no location found!!!")
                 print(error.debugDescription)
                 return
             }
@@ -105,10 +103,8 @@ struct BierkellerDetailView: View {
             self.item.longitude = location.coordinate.longitude
 
             if self.item.id != nil {
-                print("CALL updateBeerCellar()")
                 updateBeerCellar()
             } else {
-                print("CALL createBeerCellar()")
                 createBeerCellar()
             }
         }

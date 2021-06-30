@@ -23,7 +23,6 @@ struct OrderManagementView: View {
     }
     
     func callBack(_ orderData: Order) {
-        print("!!!!!!! orderData.status: \(orderData.status)")
         appState.client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
             getItems()
         }, payload: orderData)
