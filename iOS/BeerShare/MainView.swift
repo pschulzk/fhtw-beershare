@@ -7,16 +7,15 @@
 
 import SwiftUI
 struct MainView: View {
-    
     @StateObject var appState: AppState = AppState()
-    
     @State private var user: String = ""
     @State private var password: String = ""
     
     private func login() {
         // check if credentials are valid
-        appState.credentials = URLCredential(user: self.user, password: self.password, persistence: .forSession)
-        appState.client = WebApiClient(credentials: appState.credentials)
+        let _credentials = URLCredential(user: self.user, password: self.password, persistence: .forSession)
+        appState.credentials = _credentials
+        appState.client = WebApiClient(credentials: _credentials)
         appState.client.getData(additiveUrl: "auth", ofType: LoginResponse.self, callback: { result in
             appState.loggedIn = true
         })
@@ -32,6 +31,7 @@ struct MainView: View {
             
             VStack(alignment: .leading) {
                 Text("Benutzername")
+                    .autocapitalization(.none)
                     .font(.caption)
                 TextField("Benutzername", text: $user)
                     .padding(8.0)
@@ -104,12 +104,17 @@ struct MainView: View {
                 .padding(10)
             }
             .navigationBarTitle("Hauptmenü")
-            .navigationBarItems(trailing: Button(action: {
+            .navigationBarItems(
+                leading: appState.loggedIn
+                    ? Text("Hello \(self.user)!")
+                        .font(.caption)
+                    : nil,
+                trailing: appState.loggedIn ? Button(action: {
                     print("Button pushed!")
                     logout()
                 }) {
                     Text("logout")
-                })
+                } : nil)
                 .navigationBarTitleDisplayMode(.inline)
             }
         }

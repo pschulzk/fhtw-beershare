@@ -12,12 +12,11 @@ let BASE_URL = "http://0.0.0.0:8000/api/v1/"
 class AppState : ObservableObject {
     // @Published var base_url = "http://0.0.0.0:8000/api/v1/"
     @Published var credentials: URLCredential
-    @Published var loggedIn: Bool
+    @Published var loggedIn: Bool = false
     var client: WebApiClient
     
     init() {
-        self.loggedIn = false
-        let _credentials = URLCredential(user: "andreas", password: "andreas", persistence: .forSession)
+        let _credentials = URLCredential(user: "", password: "", persistence: .forSession)
         self.credentials = _credentials
         self.client = WebApiClient(credentials: _credentials)
     }
