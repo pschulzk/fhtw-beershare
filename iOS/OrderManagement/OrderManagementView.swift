@@ -22,10 +22,18 @@ struct OrderManagementView: View {
         })
     }
     
-    func callBack(_ orderData: Order) {
-        appState.client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
-            getItems()
-        }, payload: orderData)
+    func callBack(orderData: Order, orderType: OrderType) {
+        if orderType == OrderType.OWN {
+            if let _id = orderData.id {
+                appState.client.deleteData(additiveUrl: "beerorder/\(_id)", callback: {
+                    getItems()
+                })
+            }
+        } else {
+            appState.client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
+                getItems()
+            }, payload: orderData)
+        }
     }
     
     var body: some View {
@@ -47,8 +55,8 @@ struct OrderManagementView: View {
                     }
                 }
                 .listStyle(PlainListStyle())
+                .border(Color.gray)
             }
-            .border(Color.gray)
             
             Divider()
             Spacer()
@@ -69,8 +77,8 @@ struct OrderManagementView: View {
                     }
                 }
                 .listStyle(PlainListStyle())
+                .border(Color.gray)
             }
-            .border(Color.gray)
         }
         .navigationTitle("Meine Bestellungen")
         .navigationBarTitleDisplayMode(.inline)

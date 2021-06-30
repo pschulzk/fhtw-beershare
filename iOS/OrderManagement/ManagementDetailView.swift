@@ -11,13 +11,13 @@ struct ManagementDetailView: View {
 
     @State var orderType: OrderType
     @State var order: Order
-    var callBack: (_ orderData: Order) -> Void
+    var callBack: (_ orderData: Order, _ orderType: OrderType) -> Void
     
     private var isOwn: Bool { self.orderType == OrderType.OWN }
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     func save() {
-        callBack(self.order)
+        callBack(self.order, self.orderType)
         presentationMode.wrappedValue.dismiss()
     }
 
@@ -34,35 +34,46 @@ struct ManagementDetailView: View {
                 HStack{
                     if isOwn {
                         Button(action: {
-                            self.order.status = OrderStatusInt.ACCEPTED.rawValue
+                            self.order.status = OrderStatusInt.DECLINED.rawValue
                             save()
                         }) {
-                            Image("Akzeptieren")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(5)
+                            Image(systemName: "xmark")
+                                .foregroundColor(.white)
+                                .padding(8)
+                            Text("Abbrechen")
+                                .foregroundColor(.white)
+                                .padding(8)
                         }
+                        .background(Color.orange)
+                        .padding(.top)
                     } else {
                         Button(action: {
                             self.order.status = OrderStatusInt.ACCEPTED.rawValue
                             save()
                         }) {
-                            Image("Akzeptieren")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(5)
-
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.white)
+                                .padding(8)
+                            Text("Akzeptieren")
+                                .foregroundColor(.white)
+                                .padding(8)
                         }
+                        .background(Color.orange)
+                        .padding(.top)
                         
                         Button(action: {
                             self.order.status = OrderStatusInt.DECLINED.rawValue
                             save()
                         }) {
-                            Image("Ablehnen")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(5)
+                            Image(systemName: "xmark")
+                                .foregroundColor(.white)
+                                .padding(8)
+                            Text("Ablehnen")
+                                .foregroundColor(.white)
+                                .padding(8)
                         }
+                        .background(Color.orange)
+                        .padding(.top)
                     }
                     
                 }
@@ -75,9 +86,9 @@ struct ManagementDetailView: View {
     }
 }
 
-struct ManagementDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        let testCallBack: (_ orderData: Order) -> Void = { d in print("TEST") }
-        ManagementDetailView(orderType: OrderType.OWN, order: Order(amount: 3, status: OrderStatusInt.PLACED.rawValue, beerCellar: 1, beer: 1), callBack: testCallBack)
-    }
-}
+// struct ManagementDetailView_Previews: PreviewProvider {
+//     static var previews: some View {
+//         let testCallBack: (_ orderData: Order, _ orderType: OrderType) -> Void = { d in print("TEST") }
+//         ManagementDetailView(orderType: OrderType.OWN, order: Order(amount: 3, status: OrderStatusInt.PLACED.rawValue, beerCellar: 1, beer: 1), callBack: testCallBack)
+//     }
+// }

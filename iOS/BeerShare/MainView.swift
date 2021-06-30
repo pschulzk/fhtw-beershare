@@ -31,9 +31,10 @@ struct MainView: View {
             
             VStack(alignment: .leading) {
                 Text("Benutzername")
-                    .autocapitalization(.none)
                     .font(.caption)
                 TextField("Benutzername", text: $user)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
                     .padding(8.0)
                     .border(Color.gray)
                 

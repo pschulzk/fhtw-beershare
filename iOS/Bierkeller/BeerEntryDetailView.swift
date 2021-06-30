@@ -17,6 +17,7 @@ struct BeerEntryDetailView: View {
     @State private var amount: String = "0"
     @State private var showSuccess = false
     private var isDisabled: Bool { self.mode == .READONLY }
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     func updateItem() {
         if var payload = self.item {
@@ -39,6 +40,7 @@ struct BeerEntryDetailView: View {
         )
         appState.client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
             showSuccess = true
+            presentationMode.wrappedValue.dismiss()
         }, payload: payload)
     }
     
