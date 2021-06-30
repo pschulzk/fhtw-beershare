@@ -15,6 +15,7 @@ struct OrderManagementView: View {
     @State private var otherOrders = [Order]()
     
     func getItems() {
+        self.userName = self.appState.credentials.user ?? ""
         appState.client.getData(additiveUrl: "beerorder/", ofType: [Order].self, callback: { result in
             self.allOrders = result
             self.myOrders = self.allOrders.filter({ i in i.buyer == self.userName })
@@ -29,10 +30,18 @@ struct OrderManagementView: View {
                     getItems()
                 })
             }
-        } else {
-            appState.client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
-                getItems()
-            }, payload: orderData)
+        }
+
+        if orderType == OrderType.OTHER {
+            if let _id = orderData.id {
+                appState.client.putData(additiveUrl: "beerorder/\(_id)", ofType: Order.self, callback: { result in
+                    getItems()
+                }, payload: orderData)
+            } else {
+                appState.client.postData(additiveUrl: "beerorder/", ofType: Order.self, callback: { result in
+                    getItems()
+                }, payload: orderData)
+            }
         }
     }
     
@@ -43,7 +52,7 @@ struct OrderManagementView: View {
                 Text("Eingehende Bestellungen")
                 List {
                     ForEach(self.myOrders, id: \.self) { item in
-                        NavigationLink(destination: ManagementDetailView(orderType: OrderType.OTHER, order: item, callBack: callBack).environmentObject(appState)) {
+                        NavigationLink(destination: ManagementDetailView(orderType: OrderType.OWN, order: item, callBack: callBack).environmentObject(appState)) {
                             HStack{
                                 Text(item.beerName ?? "No name")
                                 Spacer()
@@ -65,7 +74,7 @@ struct OrderManagementView: View {
                 Text("Ausgehende Bestellungen")
                 List{
                     ForEach(self.otherOrders, id: \.self) { item in
-                        NavigationLink(destination: ManagementDetailView(orderType: OrderType.OWN, order: item, callBack: callBack).environmentObject(appState)) {
+                        NavigationLink(destination: ManagementDetailView(orderType: OrderType.OTHER, order: item, callBack: callBack).environmentObject(appState)) {
                             HStack{
                                 Text(item.beerName ?? "No name")
                                 Spacer()
