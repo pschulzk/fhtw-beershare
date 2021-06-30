@@ -29,6 +29,7 @@ struct MainView: View {
     var body: some View {
         NavigationView{
         if appState.loggedIn == false {
+            
             VStack(alignment: .leading) {
                 Text("Benutzername")
                     .font(.caption)
@@ -42,36 +43,34 @@ struct MainView: View {
                     .padding(8.0)
                     .border(Color.gray)
                 
-                HStack(alignment: .top) {
-                    Button(action: {
-                        print("Button pushed!")
-                        login()
-                    }) {
-                        HStack(alignment: .top) {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.white)
-                                .padding(8)
-                            Text("Login")
-                                .foregroundColor(.white)
-                                .padding(8)
-                        }
+                Button(action: {
+                    print("Button pushed!")
+                    login()
+                }) {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "checkmark")
+                            .foregroundColor(.white)
+                            .padding(8)
+                        Text("Login")
+                            .foregroundColor(.white)
+                            .padding(8)
+                        Spacer()
                     }
-                    .background(Color.orange)
-                    .padding(2)
-                    .frame(maxWidth: .infinity)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(Color.white, lineWidth: 2)
-                    )
                 }
+                .background(Color.orange)
+                .padding(.top)
+                
                 Spacer()
             }
             .padding()
             .navigationBarTitle("Login")
             .navigationBarTitleDisplayMode(.inline)
+
         } else {
-            HStack{
-                VStack{
+
+            HStack {
+                VStack {
                     Spacer()
                     NavigationLink(destination: BeerSearchView().environmentObject(appState)){
                         Image("Biersuche")
@@ -110,14 +109,13 @@ struct MainView: View {
                     logout()
                 }) {
                     Text("logout")
-                        .foregroundColor(.black)
                 })
                 .navigationBarTitleDisplayMode(.inline)
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+
     }
-    
 }
 
 struct MainView_Previews: PreviewProvider {
