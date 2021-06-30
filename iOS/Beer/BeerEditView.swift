@@ -22,7 +22,6 @@ struct BeerEditView: View {
     @State private var showAlert = false
     @State private var activeAlert: ActiveAlert = .showSuccess
     private var isDisabled: Bool { self.mode != .CREATE }
-    // private let client = WebApiClient()
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     /**

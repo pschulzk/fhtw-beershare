@@ -17,7 +17,6 @@ struct BeerEntryDetailView: View {
     @State private var amount: String = "0"
     @State private var showSuccess = false
     private var isDisabled: Bool { self.mode == .READONLY }
-    // private let client = WebApiClient()
     
     func updateItem() {
         if var payload = self.item {

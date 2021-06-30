@@ -13,7 +13,6 @@ struct OrderManagementView: View {
     @State private var allOrders = [Order]()
     @State private var myOrders = [Order]()
     @State private var otherOrders = [Order]()
-    // private let client = WebApiClient()
     
     func getItems() {
         appState.client.getData(additiveUrl: "beerorder/", ofType: [Order].self, callback: { result in

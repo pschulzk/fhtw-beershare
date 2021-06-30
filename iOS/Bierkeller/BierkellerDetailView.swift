@@ -20,7 +20,6 @@ struct BierkellerDetailView: View {
     @State private var showAlert = false
     @State private var activeAlert: ActiveAlert = .showSuccess
     private var isDisabled: Bool { self.mode == .READONLY }
-    // private let client = WebApiClient()
     
     init(mode: ViewMode, id: Int? = nil) {
         self.mode = mode
