@@ -138,7 +138,7 @@ struct BierkellerDetailView: View {
                 }
                 
                 if self.mode != .READONLY && self.item.id != nil {
-                    NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id).environmentObject(appState)) {
+                    NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id).environmentObject(appState).environmentObject(appState)) {
                         Image("AddBeer")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -159,7 +159,7 @@ struct BierkellerDetailView: View {
                 if let entries = self.item.entries {
                     List{
                         ForEach(entries, id: \.self) { item in
-                            NavigationLink(destination: BeerEntryDetailView(mode: self.mode, beerCellarId: self.item.id, item: item)) {
+                            NavigationLink(destination: BeerEntryDetailView(mode: self.mode, beerCellarId: self.item.id, item: item).environmentObject(appState)) {
                                 HStack{
                                     Text(item.beerName ?? "Bier Name")
                                     Spacer()
