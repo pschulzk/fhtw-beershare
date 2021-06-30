@@ -143,7 +143,7 @@ struct BierkellerDetailView: View {
                 }
                 
                 if self.mode != .READONLY && self.item.id != nil {
-                    NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id)) {
+                    NavigationLink(destination: BeerEditView(mode: .CREATE, beerCellarId: self.id).environmentObject(appState)) {
                         Image("AddBeer")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
